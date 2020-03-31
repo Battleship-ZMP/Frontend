@@ -1,46 +1,95 @@
 <template>
-	<div>
-		<nav class="mb-1 navbar navbar-expand-lg navbar-dark secondary-color lighten-1">
-			<a class="navbar-brand" href="#">Cool Recipes</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555" aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarSupportedContent-555">
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active">
-					<a class="nav-link" href="#">Home
-					<span class="sr-only">(current)</span>
-					</a>
-					</li>
-					<router-link class="nav-item" tag="li" to="/form"><a class="nav-link">Form</a></router-link>
-					<router-link class="nav-item" tag="li" to="/view"><a class="nav-link">View</a></router-link>
-				</ul>
-				<ul class="navbar-nav ml-auto nav-flex-icons">
-					<li class="nav-item">
-					<a class="nav-link waves-effect waves-light">1
-						<i class="fas fa-envelope"></i>
-					</a>
-					</li>
-					<li class="nav-item avatar dropdown">
-				        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				        	<img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" class="header-img rounded-circle z-depth-0"
-				            alt="avatar image">
-				        </a>
-				        <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary" aria-labelledby="navbarDropdownMenuLink-55">
-				        	<a class="dropdown-item" href="#">Action</a>
-				        	<a class="dropdown-item" href="#">Another action</a>
-				        	<a class="dropdown-item" href="#">Something else here</a>
-				        </div>
-			      	</li>
-			    </ul>
-		  	</div>
-		</nav>
-	</div>
+	<v-container>
+
+		<v-app-bar class="grey lighten-4" flat app>
+			<v-app-bar-nav-icon class="grey-text text--lighten-4" @click="drawer = !drawer"></v-app-bar-nav-icon>
+			<v-toolbar-title class="grey lighten-4 text-uppercase grey--text">
+				<span class="font-weight-light">Todo</span>
+				<span>Ninja</span>
+			</v-toolbar-title>
+			<v-spacer></v-spacer>
+			<v-menu offset-y>
+				<template v-slot:activator="{ on }">
+					<v-btn text v-on="on" color="grey">
+						<v-icon left>mdi-chevron-down</v-icon> <!-- or use mdi-chevron-down -->
+						<span>Menu</span>
+					</v-btn>
+				</template>
+				<v-list>
+					<v-list-item v-for="link in links" :key="link.text" :to="link.route">
+						<v-list-item-title>{{ link.text }}</v-list-item-title>
+					</v-list-item>
+				</v-list>
+			</v-menu>
+			<v-btn text color=" lighten-4" class=" text--darken-1 font-weight-normal" style="color: #9e9e9e;" >
+				<span>Sign Out</span>
+				<v-icon right>mdi-exit-to-app</v-icon>
+			</v-btn>
+		</v-app-bar>
+
+		<v-navigation-drawer
+		v-model="drawer"
+		:color="color"
+		:right="false"
+		app
+		dark
+		>
+		<v-list
+		dense
+		nav
+		class="py-0"
+		>
+		<v-list-item two-line :class="miniVariant && 'px-0'">
+			<v-row class="justify-center flex-column align-center" >
+				<div>
+					<v-list-item-avatar size="100">
+						<img src="https://randomuser.me/api/portraits/men/81.jpg">
+					</v-list-item-avatar>
+
+					<v-list-item-content>
+						<p class="white--text subtitle-1 mt-1">
+							The Net Ninja
+						</p>
+					</v-list-item-content>
+				</div>
+			</v-row>
+		</v-list-item>
+
+		<v-divider></v-divider>
+
+		<v-list-item
+		v-for="item in items"
+		:key="item.title"
+		link router to="item.path"
+		>
+		<v-list-item-icon>
+			<v-icon>{{ item.icon }}</v-icon>
+		</v-list-item-icon>
+
+		<v-list-item-content>
+			<v-list-item-title>{{ item.title }}</v-list-item-title>
+		</v-list-item-content>
+	</v-list-item>
+</v-list>
+</v-navigation-drawer>
+</v-container>
 </template>
 
 <script>
-	export default{
-
+	export default {
+		data () {
+			return {
+				drawer: true,
+				items: [
+				{ title: 'Tablica', icon: 'mdi-view-dashboard' },
+				{ title: 'Moje Przepisy', icon: 'mdi-image' },
+				{ title: 'About', icon: 'mdi-help-box' },
+				],
+				color: 'teal',
+				miniVariant: true,
+				background: false,
+			}
+		}
 	}
 </script>
 <style scoped>
