@@ -11,9 +11,17 @@ const mutations = {
 
 const actions = {
 	signIn({commit}, authData){
-		axiosAuth.post('/accounts:signInWithPassword?key=AIzaSyDL8y7NwSxsYvaNf8M7K_MwMoNMhgMSzow')
+		axiosAuth.post('/accounts:signInWithPassword?key=AIzaSyDL8y7NwSxsYvaNf8M7K_MwMoNMhgMSzow', {
+			email: authData.email,
+			password: authData.password,
+			returnSecureToken: true
+		})
 		.then(res => {
-			
+			commit('setUserData',{
+				token: res.data.idToken,
+				userId: res.data.localId
+			})
+
 		})
 		.catch(err => console.log(err));
 	}

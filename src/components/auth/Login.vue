@@ -2,16 +2,15 @@
 	<v-dialog v-model="dialog" width="500">
 		<template v-slot:activator="{ on }">
 			<v-btn class="grey lighten-4 grey--text" text v-on="on">
-				<span>Zarejestruj się</span>
+				<span>Zaloguj się</span>
 			</v-btn>
 		</template>
 		<v-card>
-			<v-card-title class="headline teal white--text" color="teal" teal primary-title>Dołącz do nas!</v-card-title>
+			<v-card-title class="headline teal white--text" color="teal" teal primary-title>Zaloguj się!</v-card-title>
 			<v-card-text class="pa-5">
 				<v-form ref="form">
 					<v-text-field class="" color="teal" label="E-mail" v-model="email" :rules="[rules.required, rules.email]"></v-text-field>
 					<v-text-field class="" color="teal" label="Hasło" v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :type="show1 ? 'text' : 'password'" @click:append="show1 = !show1" :rules="[rules.required, rules.minLength]"></v-text-field>
-					<v-text-field class="" color="teal" label="Powtórz Hasło" :rules="[rules.required, rules.matchPassword]" v-model="passwordConfirm" :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" :type="show2 ? 'text' : 'password'" @click:append="show2 = !show2"></v-text-field>
 				</v-form>
 			</v-card-text>
 			<v-divider></v-divider>
@@ -29,7 +28,6 @@
 			return{
 				email: '',
 				password: '',
-				passwordConfirm: '',
 				rules: {
 					required: value => !!value || 'To pole jest wymagane!',
 					email: value => {
@@ -37,10 +35,8 @@
 						return pattern.test(value) || 'Niepoprawny email!'
 					},
 					minLength: value => value.length >= 8 || 'Hasło musi mieć minimum 8 znaków!',
-					matchPassword: value => value == this.password || 'Hasła muszą być takie same!' 
 				},
 				show1: false,
-				show2: false,
 				dialog: false,
 			}
 		},
@@ -52,9 +48,7 @@
 						password: this.password
 					};
 					this.dialog = false;
-
-					this.$store.dispatch('signUp', authData);
-					this.$store.dispatch('fetchUser');
+					this.$store.dispatch('signIn', authData);
 				}
 			}
 		}

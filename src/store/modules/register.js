@@ -3,18 +3,6 @@ import axiosAuth from '@/axios-files/axios-auth'
 import axiosDb from '@/axios-files/axios-db'
 
 
-
-const getters = {
-
-};
-
-const mutations = {
-	setUserData(state, userData){
-		state.userId = userData.userId;
-		state.token = userData.token;
-	}
-};
-
 const actions = {
 	signUp({commit, dispatch}, authData){
 		axiosAuth.post('/accounts:signUp?key=AIzaSyDL8y7NwSxsYvaNf8M7K_MwMoNMhgMSzow', {
@@ -39,14 +27,16 @@ const actions = {
 			console.log(err);
 		});
 	},
-	saveNewUser({state}, authData){
-		if(!state.token){
+	saveNewUser({getters}, authData){
+		if(!getters.getUserData.token){
 			return
 		}
-		axiosDb.post('/users.json?auth=' + state.token, authData);
-	}
+		console.log(getters.getUserData.token);
+		axiosDb.post('/users.json?auth=' + getters.getUserData.token, authData);
+	},
+	
 };
 
 export default {
-	getters, mutations, actions
+	actions
 };

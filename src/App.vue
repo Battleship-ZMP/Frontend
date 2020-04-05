@@ -17,6 +17,10 @@ export default {
   components: {
     appHeader: Header,
   },
+  created(){
+    this.$store.dispatch('autoLogin');
+    this.$store.dispatch('fetchUser');
+  },
 
   data: () => ({
     //
