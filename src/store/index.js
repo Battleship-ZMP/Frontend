@@ -4,6 +4,7 @@ import register from './modules/register';
 import autoLogin from './modules/autoLogin';
 import logout from './modules/logout';
 import login from './modules/login';
+import users from './modules/users';
 
 Vue.use(Vuex)
 
@@ -12,13 +13,15 @@ export default new Vuex.Store({
 		register,
 		autoLogin,
 		logout,
-		login
+		login,
+		users
 	},
 	state:{
 		userData:{
 			userId: null,
 			token: null,
-			user: null
+			user: null,
+			userName: null
 		}
 		
 	},
@@ -31,11 +34,13 @@ export default new Vuex.Store({
 		setUserData(state, userData){
 			state.userData.userId = userData.userId;
 			state.userData.token = userData.token;
+			state.userData.userName = userData.userName;
 		},
 		clearAuthData(state){
-			state.userData.token = null;
-			state.userData.userId = null;
-			state.userData.user = null;
+			const obj = state.userData;
+			Object.keys(obj).forEach(function(index) {
+				obj[index] = null;
+			});
 		}
 	}
 })

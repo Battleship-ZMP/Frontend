@@ -6,6 +6,11 @@ const actions = {
 		localStorage.removeItem('token');
 		localStorage.removeItem('expirationDate');
 		localStorage.removeItem('id');
+	},
+	autoLogout({dispatch}, expirationTime){
+		setTimeout(()=>{
+			dispatch('logout');
+		}, expirationTime * 1000);
 	}
 }
 

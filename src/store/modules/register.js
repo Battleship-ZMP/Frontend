@@ -14,6 +14,7 @@ const actions = {
 			const userData = {
 				userId: res.data.localId,
 				token: res.data.idToken,
+				userName: authData.userName
 			}
 			const now = new Date();
 			const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000);
@@ -22,6 +23,7 @@ const actions = {
 			localStorage.setItem('expirationDate', expirationDate);
 			commit('setUserData', userData);
 			dispatch('saveNewUser', authData);
+			dispatch('autoLogout', res.data.expiresIn);
 		})
 		.catch(err => {
 			console.log(err);
