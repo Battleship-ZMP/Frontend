@@ -5,6 +5,7 @@ import autoLogin from './modules/autoLogin';
 import logout from './modules/logout';
 import login from './modules/login';
 import users from './modules/users';
+import recipes from './modules/recipes';
 
 Vue.use(Vuex)
 
@@ -14,14 +15,15 @@ export default new Vuex.Store({
 		autoLogin,
 		logout,
 		login,
-		users
+		users,
+		recipes
 	},
 	state:{
 		userData:{
 			userId: null,
 			token: null,
-			user: null,
-			userName: null
+			userName: null,
+			expirationDate: null
 		}
 		
 	},
@@ -32,9 +34,9 @@ export default new Vuex.Store({
 	},
 	mutations : {
 		setUserData(state, userData){
-			state.userData.userId = userData.userId;
-			state.userData.token = userData.token;
-			state.userData.userName = userData.userName;
+			for(let key in  userData){
+				state.userData[key] = userData[key];
+			}
 		},
 		clearAuthData(state){
 			const obj = state.userData;

@@ -31,7 +31,7 @@
 				email: '',
 				password: '',
 				passwordConfirm: '',
-				userName: 'testowicz',
+				userName: '',
 				rules: {
 					required: value => !!value || 'To pole jest wymagane!',
 					email: value => {
@@ -69,7 +69,6 @@
 		},
 		created(){
 			this.$store.dispatch('getUsers');
-			console.log('users',this.users);
 		}
 	}
 </script>

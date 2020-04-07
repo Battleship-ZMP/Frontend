@@ -16,16 +16,21 @@ const actions = {
 			console.log(err);
 		});
 	},
-	autoLogin({commit}){
+	autoLogin({commit, getters}){
 		const token = localStorage.getItem('token');
 		if(!token){
 			return
 		}
-		const userId = localStorage.getItem('userId');
-		commit('setUserData', {
-			token: token,
-			userId: userId
-		});
+		const expirationDate = localStorage.getItem('expirationDate');
+		const now = new Date();
+		if(now >= expirationDate){
+			return
+		}
+		const userData = {};
+		for(let key in getters.getUserData){
+			userData[key] = localStorage.getItem(key);
+		}
+		commit('setUserData', userData);
 	}
 };
 

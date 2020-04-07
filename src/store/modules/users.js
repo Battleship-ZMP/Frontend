@@ -21,7 +21,6 @@ const actions = {
 	getUsers({commit}){
 		axios.get('/users.json')
 		.then(res => {
-			console.log(res.data);
 			const userNames = [];
 			for(let key in res.data){
 				userNames.push(res.data[key].userName);

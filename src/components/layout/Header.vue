@@ -24,19 +24,20 @@
 						<img class="" src="https://cdn.vuetifyjs.com/images/john.jpg" alt="">
 					</v-avatar>
 					<p class="white--text subtitle-1 mt-1">
-						Daniel Lewicki
+						{{this.userName}}
 					</p>
+					<Login v-if="loginButton"/>
 				</v-row>
 
 				<v-divider class="my-2"></v-divider>
 
-				<v-list-item v-for="item in items" :key="item.title" link router :to="item.path">
+				<v-list-item v-for="page in pages" :key="page.title" link router :to="page.path" v-if="isLogged  || !isLogged && page.login == 'visible'">
 					<v-list-item-icon>
-						<v-icon>{{ item.icon }}</v-icon>
+						<v-icon>{{ page.icon }}</v-icon>
 					</v-list-item-icon>
 
 					<v-list-item-content>
-						<v-list-item-title>{{ item.title }}</v-list-item-title>
+						<v-list-item-title>{{ page.title }}</v-list-item-title>
 					</v-list-item-content>
 				</v-list-item>
 			</v-list>
@@ -52,16 +53,15 @@
 		data () {
 			return {
 				drawer: true,
-				items: [
-				{ title: 'Tablica', icon: 'mdi-view-dashboard', path: '/dashboard' },
-				{ title: 'Moje Przepisy', icon: 'mdi-image', path: '/recipes' },
-				{ title: 'About', icon: 'mdi-help-box', path: '/' },
+				pages: [
+				{ title: 'Katalog', icon: 'mdi-view-dashboard', path: '/', login: 'visible' },
+				{ title: 'Mój Profil', icon: 'mdi-account', path: '/profile', login: 'hidden' },
+				{ title: 'Moja książka kucharska', icon: 'mdi-book-open-page-variant', path: '/cookbook', login: 'hidden' },
 				],
 				color: 'teal',
 				miniVariant: true,
 				background: false,
-				
-				
+				loginButton: true
 			}
 		},
 		components:{
@@ -70,6 +70,14 @@
 		computed:{
 			isLogged(){
 				return this.$store.getters.getUserData.token != null  ? true : false;
+			},
+			userName(){
+				if(this.$store.getters.getUserData.userName == null){
+					this.loginButton = true;
+				}else{
+					this.loginButton = false;
+					return this.$store.getters.getUserData.userName;
+				}
 			}
 		},
 		methods: {

@@ -12,6 +12,9 @@
 					<v-text-field class="" color="teal" label="E-mail" v-model="email" :rules="[rules.required, rules.email]"></v-text-field>
 					<v-text-field class="" color="teal" label="Hasło" v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :type="show1 ? 'text' : 'password'" @click:append="show1 = !show1" :rules="[rules.required, rules.minLength]"></v-text-field>
 				</v-form>
+				<p>Nie masz jeszcze konta? Zarejestruj się!</p>
+				<Register />
+				
 			</v-card-text>
 			<v-divider></v-divider>
 			<v-card-actions>
@@ -23,6 +26,8 @@
 </template>
 
 <script>
+	import Register from './Register.vue'
+
 	export default{
 		data(){
 			return{
@@ -50,7 +55,13 @@
 					this.dialog = false;
 					this.$store.dispatch('signIn', authData);
 				}
+			},
+			metoda(){
+				console.log('login zamkniety');
 			}
+		},
+		components:{
+			Register
 		}
 	}
 </script>

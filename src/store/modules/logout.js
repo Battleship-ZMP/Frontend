@@ -1,11 +1,16 @@
 import Vue from 'vue'
 
 const actions = {
-	logout({commit}){
+	logout({commit, getters}){
 		commit('clearAuthData');
-		localStorage.removeItem('token');
-		localStorage.removeItem('expirationDate');
-		localStorage.removeItem('id');
+		const userData = getters.getUserData;
+		for(let key in userData){
+			if(localStorage.getItem(key) != 'SILENT'){
+				localStorage.removeItem(key);
+			}
+			
+		}
+
 	},
 	autoLogout({dispatch}, expirationTime){
 		setTimeout(()=>{

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import axiosAuth from '@/axios-files/axios-auth'
-import axiosDb from '@/axios-files/axios-db'
+import db from '@/firebase-settings/fb-settings'
 
 
 const actions = {
@@ -34,7 +34,7 @@ const actions = {
 			return
 		}
 		console.log(getters.getUserData.token);
-		axiosDb.post('/users.json?auth=' + getters.getUserData.token, authData);
+		db.collection('users').add(authData);
 	},
 	
 };
