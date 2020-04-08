@@ -1,9 +1,9 @@
 <template>
 	<v-container>
 
-		<v-app-bar class="grey lighten-4" flat app>
-			<v-app-bar-nav-icon class="grey--text " @click="drawer = !drawer"></v-app-bar-nav-icon>
-			<v-toolbar-title class="grey lighten-4  grey--text">
+		<v-app-bar color="teal" class="" flat app>
+			<v-app-bar-nav-icon class="white--text " @click="drawer = !drawer"></v-app-bar-nav-icon>
+			<v-toolbar-title class="  white--text">
 				<span class="font-weight-light">Cool</span>
 				<span>Recipes</span>
 			</v-toolbar-title>
@@ -11,7 +11,7 @@
 
 			<Login v-if="!isLogged" />
 			<Register v-if="!isLogged" />
-			<v-btn v-if="isLogged" @click="logout" text color=" lighten-4" class=" text--darken-1 font-weight-normal" style="color: #9e9e9e;" >
+			<v-btn v-if="isLogged" @click="logout" text class="white--text font-weight-normal">
 				<span>Wyloguj</span>
 				<v-icon right>mdi-exit-to-app</v-icon>
 			</v-btn>

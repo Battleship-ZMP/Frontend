@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import db from '@/firebase-settings/fb-settings'
+import router from '@/router';
 
 const state = {
 	recipes: [],
@@ -10,7 +11,8 @@ const state = {
 		name: '',
 		rating: 0,
 		date: '',
-		userName: ''
+		userName: '',
+		photo: ''
 	}
 	
 };
@@ -18,34 +20,54 @@ const state = {
 const getters = {
 	getRecipes(state){
 		return state.recipes;
+	},
+	getCurrentRecipe(state){
+		return state.currentRecipe;
 	}
 };
 
 const mutations = {
 	setRecipes(state, recipes){
-		state.recipes.push(recipes);
+		state.recipes = recipes;
 	},
-	setCurrentRecipe(state){
+	setCurrentRecipe(state, id){
+
 		state.recipes.forEach((item,index)=>{
-			if(item.userName == localStorage.getItem('userName')){
-				console.log(item.userName);
+			if(item.id == id){
+				for(let key in item){
+					state.currentRecipe[key] = item[key];
+				}
 			}
 			
 		});
+		console.log('commit setCurrentRecipe', state.recipes);
 	}
 };
 
 const actions = {
 	loadRecipes({commit}){
 		db.collection('recipes').get().then((query) =>{
+			const recipes = [];
 			query.forEach(function(doc) {
-				const recipes = {};
+
+				const recipe = {};
 				for(let key in doc.data()){
-					recipes[key] = doc.data()[key];
+					recipe[key] = doc.data()[key];
 				}
-				commit('setRecipes', recipes);
+				recipe['id'] = doc.id;
+				recipes.push(recipe);
+				
 			});
+			console.log('action loadRecipes');
+			commit('setRecipes', recipes);
+			const routerParamId = router.history.current.params.id;
+			if(routerParamId){
+				commit('setCurrentRecipe', routerParamId);
+			}
 		});
+	},
+	setCurrentRecipe({commit, dispatch}, id){
+		commit('setCurrentRecipe', id);
 	}
 
 };

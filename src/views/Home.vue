@@ -1,41 +1,54 @@
 <template>
 	<v-container class="">
-		<v-card class="">
-			<v-row class="pa-3 mb-2" v-for="(recipe,index) in recipes" >
-				<v-col class="" cols="12" md="6">
-					<div class="caption grey--text">Przepis</div>
-					<div class="">{{recipe.name}}</div>
-				</v-col>
-				<v-col class="" cols="6" sm="4" md="2">
-					<div class="caption grey--text">Użytkownik</div>
-					<div class="">{{recipe.userName}}</div>
-				</v-col>
-				<v-col class="" cols="6" sm="4" md="2">
-					<div class="caption grey--text">Dodano</div>
-					<div class="">{{recipe.date}}</div>
-				</v-col>
-				<v-col class="" cols="12" sm="4" md="2">
-					<div class="caption grey--text">Ocena</div>
-					<v-icon class="" color="yellow darken-1" :size="20" v-for="recipe in recipe.rating">mdi-star</v-icon>						
-					<v-icon class="" color="yellow darken-1" :size="20" v-for="recipe in 5-recipe.rating">mdi-star-outline</v-icon>
-				</v-col>
-			</v-row>
-			<v-divider class=""></v-divider>
+		<v-row class="">
+			<v-col class="" cols="12" md="4" sm="6" v-for="(recipe,index) in recipes" :key="recipe.id">
+				<router-link class="" :to="`/recipe/${recipe.id}`" style="text-decoration: none;">
+					<v-card class="" >
+						<v-card-title class="justify-center">
+							<img class="" src="https://cdn.vuetifyjs.com/images/john.jpg" alt="" style="max-width: 95%">
+						</v-card-title>
+						<v-card-text class="text-center">
+							<div class="">
+								<div class="caption grey--text">Przepis</div>
+								<div class="">{{recipe.name}}</div>
+							</div>
+							<div class="">
+								<div class="caption grey--text">Użytkownik</div>
+								<div class="">{{recipe.userName}}</div>
+							</div>
+							<div class="">
+								<div class="caption grey--text">Dodano</div>
+								<div class="">{{recipe.date}}</div>
+							</div>
+							<div class="">
+								<div class="caption grey--text">Ocena</div>
+								<v-icon class="" color="yellow darken-1" :size="20" v-for="recipe in recipe.rating" :key="recipe.rating">mdi-star</v-icon>						
+								<v-icon class="" color="yellow darken-1" :size="20" v-for="recipe in 5-recipe.rating" :key="recipe.rating">mdi-star-outline</v-icon>
+							</div>
+						</v-card-text>
+						<v-divider class=""></v-divider>
 
-		</v-card>
+					</v-card>
+				</router-link>
+			</v-col>
+		</v-row>
 	</v-container>
 </template>
 
 <script>
 	export default{
+		
 		computed:{
 			recipes(){
 				return this.$store.getters.getRecipes;
 			}
 		},
 		created(){
+			
 			this.$store.dispatch('loadRecipes');
 
 		}
 	}
 </script>
+
+

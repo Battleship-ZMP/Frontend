@@ -23,7 +23,8 @@ const actions = {
 		}
 		const expirationDate = localStorage.getItem('expirationDate');
 		const now = new Date();
-		if(now >= expirationDate){
+		console.log(now, expirationDate);
+		if(Date.parse(now) >= Date.parse(expirationDate)){
 			return
 		}
 		const userData = {};
