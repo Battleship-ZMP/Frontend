@@ -11,6 +11,12 @@
 
 			<Login v-if="!isLogged" />
 			<Register v-if="!isLogged" />
+			<router-link to="/recipeForm/1">
+				<v-btn v-if="isLogged" text class="white--text font-weight-normal">
+					<v-icon left>mdi-plus</v-icon>
+					<span>Dodaj przepis!</span>
+				</v-btn>
+			</router-link>
 			<v-btn v-if="isLogged" @click="logout" text class="white--text font-weight-normal">
 				<span>Wyloguj</span>
 				<v-icon right>mdi-exit-to-app</v-icon>

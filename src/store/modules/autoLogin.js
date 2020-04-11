@@ -7,7 +7,6 @@ const actions = {
 		if(!getters.getToken){
 			return
 		}
-		console.log(getters.getToken);
 		axios.get('/users.json?auth=' + getters.getToken)
 		.then(res => {
 			console.log(res);
@@ -23,7 +22,6 @@ const actions = {
 		}
 		const expirationDate = localStorage.getItem('expirationDate');
 		const now = new Date();
-		console.log(now, expirationDate);
 		if(Date.parse(now) >= Date.parse(expirationDate)){
 			return
 		}
