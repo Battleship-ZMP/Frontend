@@ -34,6 +34,8 @@
 </template>
 
 <script>
+	import {fb, db} from '@/main'
+
 	export default{
 		data(){
 			return{
@@ -46,22 +48,45 @@
 					required: v => !!v || 'To pole jest wymagane!',
 				},
 				url: null,
+				file: null
 
 			}
 		},
 		methods:{
 			submit(){
+				if(this.$refs.form.validate()){
 
+					const recipeData = {
+						description: this.description,
+						ingredients: this.ingredients,
+						instructions: this.instructions,
+						name: this.name,
+						rating: 0,
+						date: this.getDate(),
+						userName: this.$store.getters.getUserData.userName,
+						photo: this.photo
+					};
+					this.$store.dispatch('addRecipe', recipeData);
+					this.$store.dispatch('addPhoto', this.file);
+				}
+			},
+			getDate(){
+				const date = new Date();
+				const months = ['Stycznia', 'Lutego', 'Marca', 'Kwietnia', 'Maja', 'Czerwca', 'Lipca', 'Sierpnia', 'Września', 'Października', 'Listopada', 'Grudnia'];
+				return date.getDate() +' '+months[date.getMonth()]+' '+date.getFullYear()+' '+date.getHours()+':'+date.getMinutes();
 			},
 			avatar(event){
 				if(event){
 					this.url = URL.createObjectURL(event);
+					this.photo = event.name;
+					this.file = event;
+					
 				}else{
 					this.url = null;
 				}
 				
 			}
-		},
+		}
 
 	}
 </script>

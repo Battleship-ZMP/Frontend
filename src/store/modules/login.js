@@ -1,15 +1,8 @@
 import Vue from 'vue'
 import axiosAuth from '@/axios-files/axios-auth'
 import axiosDb from '@/axios-files/axios-db'
-import db from '@/firebase-settings/fb-settings'
+import {db} from '@/main.js'
 
-const getters = {
-
-};
-
-const mutations = {
-
-};
 
 const actions = {
 	signIn({commit, dispatch}, authData){
@@ -19,12 +12,6 @@ const actions = {
 			returnSecureToken: true
 		})
 		.then(res => {
-			
-
-			// localStorage.setItem('token', res.data.idToken);
-			// localStorage.setItem('userId', res.data.localId);
-			// localStorage.setItem('userName', authData.userName);
-			// localStorage.setItem('expirationDate', expirationDate);
 			db.collection('users').get().then((query) =>{
 				query.forEach(function(doc) {
 					if(doc.data().email == authData.email){
@@ -51,5 +38,5 @@ const actions = {
 };
 
 export default {
-	getters, mutations, actions
+	actions
 };

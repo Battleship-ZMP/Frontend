@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import db from '@/firebase-settings/fb-settings'
+import {db} from '@/main.js'
 import router from '@/router';
 
 const state = {
@@ -40,7 +40,6 @@ const mutations = {
 			}
 			
 		});
-		console.log('commit setCurrentRecipe', state.recipes);
 	}
 };
 
@@ -58,7 +57,6 @@ const actions = {
 				recipes.push(recipe);
 				
 			});
-			console.log('action loadRecipes');
 			commit('setRecipes', recipes);
 			const routerParamId = router.history.current.params.id;
 			if(routerParamId){
@@ -68,6 +66,9 @@ const actions = {
 	},
 	setCurrentRecipe({commit, dispatch}, id){
 		commit('setCurrentRecipe', id);
+	},
+	addRecipe({commit},recipeData){
+		db.collection('recipes').add(recipeData);
 	}
 
 };

@@ -6,6 +6,7 @@ import logout from './modules/logout';
 import login from './modules/login';
 import users from './modules/users';
 import recipes from './modules/recipes';
+import files from './modules/files';
 
 Vue.use(Vuex)
 
@@ -16,7 +17,8 @@ export default new Vuex.Store({
 		logout,
 		login,
 		users,
-		recipes
+		recipes,
+		files
 	},
 	state:{
 		userData:{
