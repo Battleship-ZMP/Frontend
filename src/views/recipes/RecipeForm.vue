@@ -86,6 +86,22 @@
 				}
 				
 			}
+		},
+		created(){
+			var storage = fb.storage();
+			var storageRef = storage.ref();
+			var listRef = storage.child('avatars');
+
+
+			listRef.listAll().then(function(res) {
+				res.prefixes.forEach(function(folderRef) {
+					console.log(folderRef);
+				});
+				res.items.forEach(function(itemRef) {
+				});
+			}).catch(function(error) {
+			});
+
 		}
 
 	}
@@ -96,5 +112,5 @@
 		padding: 50px;
 		border: 1px solid #009688;
 	}
-	
+
 </style>
