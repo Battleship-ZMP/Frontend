@@ -64,10 +64,10 @@
 						rating: 0,
 						date: this.getDate(),
 						userName: this.$store.getters.getUserData.userName,
-						photo: this.photo
+						photo: this.photo,
+						file: this.file
 					};
 					this.$store.dispatch('addRecipe', recipeData);
-					this.$store.dispatch('addPhoto', this.file);
 				}
 			},
 			getDate(){
@@ -88,19 +88,11 @@
 			}
 		},
 		created(){
-			var storage = fb.storage();
-			var storageRef = storage.ref();
-			var listRef = storage.child('avatars');
+			
+			
 
 
-			listRef.listAll().then(function(res) {
-				res.prefixes.forEach(function(folderRef) {
-					console.log(folderRef);
-				});
-				res.items.forEach(function(itemRef) {
-				});
-			}).catch(function(error) {
-			});
+			
 
 		}
 

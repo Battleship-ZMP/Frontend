@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import {db} from '@/main.js'
+import {fb, db} from '@/main'
 import router from '@/router';
 
 const state = {
@@ -68,7 +68,20 @@ const actions = {
 		commit('setCurrentRecipe', id);
 	},
 	addRecipe({commit},recipeData){
-		db.collection('recipes').add(recipeData);
+		console.log(recipeData);
+		const storageRef = fb.storage().ref('avatars/'+localStorage.getItem('userId')+'/'+ recipeData.file.name);
+		const uploadTask = storageRef.put(recipeData.file);
+		uploadTask.on('state_changed', snapshot=>{
+
+		}, error=>{
+		}, ()=>{
+			uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+				console.log('File available at', downloadURL);
+				delete recipeData.file;
+				recipeData.photo = downloadURL;
+				db.collection('recipes').add(recipeData);
+			});
+		});
 	}
 
 };
