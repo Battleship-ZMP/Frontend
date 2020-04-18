@@ -7,8 +7,7 @@
 				<span class="font-weight-light">Cool</span>
 				<span>Recipes</span>
 			</v-toolbar-title>
-			<v-spacer></v-spacer>
-
+			<v-spacer class=""></v-spacer>
 			<Login v-if="!isLogged" />
 			<Register v-if="!isLogged" />
 			<router-link to="/recipeForm/1" style="text-decoration: none">
@@ -61,7 +60,7 @@
 				drawer: true,
 				pages: [
 				{ title: 'Katalog', icon: 'mdi-view-dashboard', path: '/', login: 'visible' },
-				{ title: 'Mój Profil', icon: 'mdi-account', path: '/profile', login: 'hidden' },
+				{ title: 'Mój Profil', icon: 'mdi-account', path: '/myProfile', login: 'hidden' },
 				{ title: 'Moja książka kucharska', icon: 'mdi-book-open-page-variant', path: '/cookbook', login: 'hidden' },
 				],
 				color: 'teal',

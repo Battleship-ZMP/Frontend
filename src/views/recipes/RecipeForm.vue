@@ -4,13 +4,13 @@
 		<v-card-text class="pa-5">
 			<v-form ref="form">
 				<v-row class="">
-					<v-col class="" cols="8">
+					<v-col class="" md="8" cols="12">
 						<v-text-field class="" color="teal" label="Tytuł" v-model="name" :rules="[rules.required]"></v-text-field>
 						<v-text-field class="" color="teal" label="Opis" v-model="description" :rules="[rules.required]"></v-text-field>
 						<v-text-field class="" color="teal" label="Składniki" v-model="ingredients" :rules="[rules.required]"></v-text-field>
 						<v-text-field class="" color="teal" label="Przepis" v-model="instructions" :rules="[rules.required]"></v-text-field>
 					</v-col>
-					<v-col class="" cols="4">
+					<v-col class="" md="4" cols="12">
 						<div class="text-center ">
 							<v-avatar v-if="!url" class="" :size="170">
 								<v-icon dark class="grey--text" :size="50">mdi-camera</v-icon>
@@ -27,7 +27,7 @@
 			</v-form>
 		</v-card-text>
 		<v-divider></v-divider>
-		<v-card-actions>
+		<v-card-actions class="pa-4">
 			<v-btn color="teal" class="white--text" @click="submit">Wyślij</v-btn>
 		</v-card-actions>
 	</v-card>
@@ -86,14 +86,6 @@
 				}
 				
 			}
-		},
-		created(){
-			
-			
-
-
-			
-
 		}
 
 	}
@@ -101,8 +93,8 @@
 
 <style>
 	.recipe-form-card{
-		padding: 50px;
 		border: 1px solid #009688;
+		margin: 50px;
 	}
 
 </style>

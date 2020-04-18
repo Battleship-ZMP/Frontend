@@ -40,7 +40,18 @@
 		
 		computed:{
 			recipes(){
-				return this.$store.getters.getRecipes;
+				const recipes = this.$store.getters.getRecipes;
+				const profileRecipes = [];
+				if(this.$route.path == '/myProfile'){
+					for(var i=0 ; i<recipes.length ; i++){
+						if(recipes[i].userName == localStorage.getItem('userName')){
+							profileRecipes.push(recipes[i]);
+						}
+					}
+					return profileRecipes;
+				}else{
+					return recipes;
+				}
 			}
 		},
 		created(){

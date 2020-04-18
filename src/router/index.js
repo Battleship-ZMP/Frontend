@@ -5,6 +5,7 @@ import View from '../components/View.vue';
 import Home from '@/views/Home.vue';
 import Recipe from '@/views/recipes/Recipe.vue';
 import RecipeForm from '@/views/recipes/RecipeForm.vue';
+import MyProfile from '@/views/user/MyProfile.vue';
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,7 @@ const routes = [
   { path: '/recipe/:id', component: Recipe},
   { path: '/recipeForm/', component: RecipeForm},
   { path: '/recipeForm/:id', component: RecipeForm},
+  { path: '/myProfile', component: MyProfile},
 ]
 
 const router = new VueRouter({

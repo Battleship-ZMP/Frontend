@@ -68,15 +68,12 @@ const actions = {
 		commit('setCurrentRecipe', id);
 	},
 	addRecipe({commit},recipeData){
-		console.log(recipeData);
 		const storageRef = fb.storage().ref('avatars/'+localStorage.getItem('userId')+'/'+ recipeData.file.name);
 		const uploadTask = storageRef.put(recipeData.file);
 		uploadTask.on('state_changed', snapshot=>{
-
 		}, error=>{
 		}, ()=>{
 			uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-				console.log('File available at', downloadURL);
 				delete recipeData.file;
 				recipeData.photo = downloadURL;
 				db.collection('recipes').add(recipeData);

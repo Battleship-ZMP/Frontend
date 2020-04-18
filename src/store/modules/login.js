@@ -22,7 +22,9 @@ const actions = {
 							token: res.data.idToken,
 							userId: res.data.localId,
 							userName: doc.data().userName,
-							expirationDate: expirationDate
+							expirationDate: expirationDate,
+							photo: doc.data().photo,
+							bio: doc.data().bio,
 						};
 						for(let key in userData){
 							localStorage.setItem(key, userData[key]);

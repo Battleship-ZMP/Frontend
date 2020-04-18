@@ -25,7 +25,9 @@ export default new Vuex.Store({
 			userId: null,
 			token: null,
 			userName: null,
-			expirationDate: null
+			expirationDate: null,
+			photo: null,
+			bio: null
 		}
 		
 	},
