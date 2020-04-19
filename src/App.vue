@@ -3,27 +3,28 @@
     <app-header class=""></app-header>
 
     <v-content>
-      <router-view></router-view>
+        <router-view></router-view>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import Header from './components/layout/Header.vue';
+  import Header from './components/layout/Header.vue';
 
-export default {
-  name: 'App',
+  export default {
+    name: 'App',
 
-  components: {
-    appHeader: Header,
-  },
-  created(){
-    this.$store.dispatch('autoLogin');
-    this.$store.dispatch('fetchUser');
-  },
+    components: {
+      appHeader: Header,
+    },
+    created(){
+      this.$store.dispatch('autoLogin');
+      this.$store.dispatch('fetchUser');
+      this.$store.dispatch('loadRecipes');
+    },
 
-  data: () => ({
+    data: () => ({
     //
   }),
-};
+  };
 </script>

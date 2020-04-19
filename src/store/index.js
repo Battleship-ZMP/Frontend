@@ -18,7 +18,7 @@ export default new Vuex.Store({
 		login,
 		users,
 		recipes,
-		files
+		files,
 	},
 	state:{
 		userData:{

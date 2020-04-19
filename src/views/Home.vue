@@ -26,8 +26,7 @@
 								<v-icon class="" color="yellow darken-1" :size="20" v-for="recipe in 5-recipe.rating" :key="recipe.rating">mdi-star-outline</v-icon>
 							</div>
 						</v-card-text>
-						<v-divider class=""></v-divider>
-
+						
 					</v-card>
 				</router-link>
 			</v-col>
@@ -37,12 +36,12 @@
 
 <script>
 	export default{
-		
+		props: ['givenRecipes'],
 		computed:{
 			recipes(){
 				const recipes = this.$store.getters.getRecipes;
 				const profileRecipes = [];
-				if(this.$route.path == '/myProfile'){
+				if(this.$route.path == '/myprofile'){
 					for(var i=0 ; i<recipes.length ; i++){
 						if(recipes[i].userName == localStorage.getItem('userName')){
 							profileRecipes.push(recipes[i]);
@@ -50,7 +49,11 @@
 					}
 					return profileRecipes;
 				}else{
-					return recipes;
+					if(this.givenRecipes){
+						return this.givenRecipes;
+					}else{
+						return recipes;
+					}
 				}
 			}
 		},

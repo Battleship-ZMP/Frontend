@@ -65,15 +65,18 @@
 						date: this.getDate(),
 						userName: this.$store.getters.getUserData.userName,
 						photo: this.photo,
-						file: this.file
+						file: this.file,
+						savedByUsers: []
 					};
 					this.$store.dispatch('addRecipe', recipeData);
 				}
 			},
 			getDate(){
-				const date = new Date();
-				const months = ['Stycznia', 'Lutego', 'Marca', 'Kwietnia', 'Maja', 'Czerwca', 'Lipca', 'Sierpnia', 'Września', 'Października', 'Listopada', 'Grudnia'];
-				return date.getDate() +' '+months[date.getMonth()]+' '+date.getFullYear()+' '+date.getHours()+':'+date.getMinutes();
+				var formatter = new Intl.DateTimeFormat('pl');
+					const now = new Date();
+					var date = formatter.format(now);
+					date = date+ ' ' + now.getHours() + ':' + now.getMinutes();
+					return date;
 			},
 			avatar(event){
 				if(event){

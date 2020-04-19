@@ -11,12 +11,12 @@
 			<Login v-if="!isLogged" />
 			<Register v-if="!isLogged" />
 			<router-link to="/recipeForm/1" style="text-decoration: none">
-				<v-btn v-if="isLogged" text class="white--text font-weight-normal">
+				<v-btn style="font-size: 0.7rem" v-if="isLogged" text class="white--text font-weight-normal">
 					<v-icon left>mdi-plus</v-icon>
 					<span>Dodaj przepis!</span>
 				</v-btn>
 			</router-link>
-			<v-btn v-if="isLogged" @click="logout" text class="white--text font-weight-normal">
+			<v-btn style="font-size: 0.7rem" v-if="isLogged" @click="logout" text class="white--text font-weight-normal">
 				<span>Wyloguj</span>
 				<v-icon right>mdi-exit-to-app</v-icon>
 			</v-btn>
@@ -60,7 +60,7 @@
 				drawer: true,
 				pages: [
 				{ title: 'Katalog', icon: 'mdi-view-dashboard', path: '/', login: 'visible' },
-				{ title: 'Mój Profil', icon: 'mdi-account', path: '/myProfile', login: 'hidden' },
+				{ title: 'Mój Profil', icon: 'mdi-account', path: '/myprofile', login: 'hidden' },
 				{ title: 'Moja książka kucharska', icon: 'mdi-book-open-page-variant', path: '/cookbook', login: 'hidden' },
 				],
 				color: 'teal',

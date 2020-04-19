@@ -12,7 +12,9 @@ const state = {
 		rating: 0,
 		date: '',
 		userName: '',
-		photo: ''
+		photo: '',
+		savedByUsers: []
+
 	}
 	
 };
@@ -23,6 +25,27 @@ const getters = {
 	},
 	getCurrentRecipe(state){
 		return state.currentRecipe;
+	},
+	getSavedRecipes(state){
+		const savedRecipes = [];
+		for(let i=0 ; i<state.recipes.length ; i++){
+			if(state.recipes[i].savedByUsers){
+				if(state.recipes[i].savedByUsers.includes(localStorage.getItem('userName'))){
+					savedRecipes.push(state.recipes[i]);
+				}
+			}
+			
+		}
+		return savedRecipes;
+	},
+	getMyRecipes(state){
+		const myRecipes = [];
+		for(let i=0 ; i<state.recipes.length ; i++){
+			if(state.recipes[i].userName == localStorage.getItem('userName')){
+				myRecipes.push(state.recipes[i]);
+			}
+		}
+		return myRecipes;
 	}
 };
 
@@ -79,6 +102,9 @@ const actions = {
 				db.collection('recipes').add(recipeData);
 			});
 		});
+	},
+	updateRecipe({commit},recipe){
+		db.collection('recipes').doc(recipe.id).update(recipe);
 	}
 
 };
