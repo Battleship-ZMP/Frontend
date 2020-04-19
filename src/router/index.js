@@ -27,4 +27,19 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  // console.log(router.history.pending);
+  // next();
+  if(router.history.pending.path != '/' && router.history.pending.path != '/recipe/'+router.history.pending.params.id){
+    if(localStorage.getItem('token')){
+      next();
+    }else{
+      next('/');
+    }
+  }else{
+    next();
+  }
+  
+});
+
 export default router

@@ -15,7 +15,7 @@ const actions = {
 			console.log(err);
 		});
 	},
-	autoLogin({commit, getters}){
+	autoLogin({commit, getters, dispatch}){
 		const token = localStorage.getItem('token');
 		if(!token){
 			return
@@ -23,6 +23,7 @@ const actions = {
 		const expirationDate = localStorage.getItem('expirationDate');
 		const now = new Date();
 		if(Date.parse(now) >= Date.parse(expirationDate)){
+			dispatch('logout');
 			return
 		}
 		const userData = {};
