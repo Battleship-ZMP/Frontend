@@ -5,7 +5,7 @@
 				<router-link class="" :to="`/recipe/${recipe.id}`" style="text-decoration: none;">
 					<v-card class="" >
 						<v-card-title class="justify-center">
-							<img class="" src="https://cdn.vuetifyjs.com/images/john.jpg" alt="" style="max-width: 95%">
+							<img class="" :src="recipe.photo" alt="" style="max-width: 95%">
 						</v-card-title>
 						<v-card-text class="text-center">
 							<div class="">

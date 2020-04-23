@@ -9,6 +9,7 @@
 </template>
 
 <script>
+  import {fb, db} from '@/main'
   import Header from './components/layout/Header.vue';
 
   export default {
@@ -21,6 +22,7 @@
       this.$store.dispatch('autoLogin');
       this.$store.dispatch('fetchUser');
       this.$store.dispatch('loadRecipes');
+      
     },
 
     data: () => ({

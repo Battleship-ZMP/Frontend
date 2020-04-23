@@ -5,7 +5,7 @@
 				<img :src="recipe.photo" alt="" class="recipe-img"></v-col>
 				<v-col class="justify-center d-flex flex-column" cols="12" md="4" sm="4">
 					<div class="d-flex justify-end">
-						<v-btn v-if="!this.recipe.savedByUsers.includes(currentUserName) ? true : false" depressed color="teal" class="white--text d-flex align-center" @click="saveRecipe">
+						<v-btn v-if="!this.recipe.savedByUsers.includes(currentUserName) && currentUserName != null ? true : false" depressed color="teal" class="white--text d-flex align-center" @click="saveRecipe">
 							<v-icon class="" left>mdi-plus</v-icon>
 							<p class="ma-0">Zapisz</p>
 						</v-btn>
@@ -19,6 +19,9 @@
 					<div class="d-flex">
 						<v-icon class="" color="yellow darken-1" :size="20" v-for="recipe in recipe.rating" :key="recipe.rating">mdi-star</v-icon>						
 						<v-icon class="" color="yellow darken-1" :size="20" v-for="recipe in 5-recipe.rating" :key="recipe.rating">mdi-star-outline</v-icon>
+					</div>
+					<div>
+						<p>Autor: {{recipe.userName}}</p>
 					</div>
 				</v-col>
 			</v-row>
@@ -57,7 +60,10 @@
 			},
 			methods:{
 				saveRecipe(){
-					
+					if(!localStorage.getItem('token')){
+						alert('Musisz się zalogować!');
+						return;
+					}
 					const recipe = this.recipe;
 					if(!recipe.savedByUsers){
 						recipe.savedByUsers = [];

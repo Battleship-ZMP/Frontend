@@ -68,7 +68,7 @@ const mutations = {
 
 const actions = {
 	loadRecipes({commit}){
-		db.collection('recipes').get().then((query) =>{
+		db.collection('recipes').orderBy('date', 'desc').get().then((query) =>{
 			const recipes = [];
 			query.forEach(function(doc) {
 
@@ -80,6 +80,7 @@ const actions = {
 				recipes.push(recipe);
 				
 			});
+			
 			commit('setRecipes', recipes);
 			const routerParamId = router.history.current.params.id;
 			if(routerParamId){
@@ -104,7 +105,9 @@ const actions = {
 		});
 	},
 	updateRecipe({commit},recipe){
-		db.collection('recipes').doc(recipe.id).update(recipe);
+		const recipeId = recipe.id;
+		delete recipe.id;
+		db.collection('recipes').doc(recipeId).update(recipe);
 	}
 
 };

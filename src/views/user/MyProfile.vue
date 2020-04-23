@@ -6,6 +6,9 @@
 			</v-avatar>
 			<h2>{{currentUser.userName}}</h2>
 			<p>{{currentUser.bio}}</p>
+			<router-link class="" to="/editmyprofile" style="text-decoration: none;">
+				<v-btn color="teal" class="white--text">Edytuj Profil</v-btn>
+			</router-link>
 		</v-row>
 		<Home />
 		

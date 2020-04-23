@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import axios from '@/axios-files/axios-db'
+import {fb, db} from '@/main'
+import firebase from 'firebase'
 
 const state = {
 	users: []
@@ -30,6 +32,27 @@ const actions = {
 			commit('setUsers', userNames);
 		})
 		.catch(err => console.log(err));
+	},
+	editUserWithFile({dispatch}, userData){
+		const storageRef = fb.storage().ref('avatars/'+localStorage.getItem('userId')+'/'+ userData.file.name);
+		const uploadTask = storageRef.put(userData.file);
+		uploadTask.on('state_changed', snapshot=>{
+		}, error=>{
+		}, ()=>{
+			uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+				delete userData.file;
+				userData.photo = downloadURL;
+				const docId = userData.docId;
+				delete userData.docId;
+				db.collection('users').doc(docId).update(userData);
+			});
+		});
+	},
+	editUserWithoutFile({dispatch}, userData){
+		const docId = userData.docId;
+		delete userData.docId;
+		delete userData.file;
+		db.collection('users').doc(docId).update(userData);
 	}
 };
 

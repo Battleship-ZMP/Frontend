@@ -6,6 +6,7 @@ import Home from '@/views/Home.vue';
 import Recipe from '@/views/recipes/Recipe.vue';
 import RecipeForm from '@/views/recipes/RecipeForm.vue';
 import MyProfile from '@/views/user/MyProfile.vue';
+import EditMyProfile from '@/views/user/EditMyProfile.vue';
 import CookBook from '@/views/recipes/CookBook.vue';
 
 Vue.use(VueRouter)
@@ -18,6 +19,7 @@ const routes = [
   { path: '/recipeform/', component: RecipeForm},
   { path: '/recipeform/:id', component: RecipeForm},
   { path: '/myprofile', component: MyProfile},
+  { path: '/editmyprofile', component: EditMyProfile},
   { path: '/cookbook', component: CookBook},
 ]
 

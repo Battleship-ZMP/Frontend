@@ -25,6 +25,8 @@ const actions = {
 							expirationDate: expirationDate,
 							photo: doc.data().photo,
 							bio: doc.data().bio,
+							docId: doc.id,
+							email: doc.data().email
 						};
 						for(let key in userData){
 							localStorage.setItem(key, userData[key]);
