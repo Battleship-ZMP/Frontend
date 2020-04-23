@@ -10,7 +10,7 @@
 			<v-spacer class=""></v-spacer>
 			<Login v-if="!isLogged" />
 			<Register v-if="!isLogged" />
-			<router-link to="/recipeForm/1" style="text-decoration: none">
+			<router-link to="/recipeForm" style="text-decoration: none">
 				<v-btn style="font-size: 0.7rem" v-if="isLogged" text class="white--text font-weight-normal">
 					<v-icon left>mdi-plus</v-icon>
 					<span>Dodaj przepis!</span>

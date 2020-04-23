@@ -30,7 +30,7 @@ const getters = {
 		const savedRecipes = [];
 		for(let i=0 ; i<state.recipes.length ; i++){
 			if(state.recipes[i].savedByUsers){
-				if(state.recipes[i].savedByUsers.includes(localStorage.getItem('userName'))){
+				if(state.recipes[i].savedByUsers.includes(localStorage.getItem('docId'))){
 					savedRecipes.push(state.recipes[i]);
 				}
 			}
@@ -41,7 +41,7 @@ const getters = {
 	getMyRecipes(state){
 		const myRecipes = [];
 		for(let i=0 ; i<state.recipes.length ; i++){
-			if(state.recipes[i].userName == localStorage.getItem('userName')){
+			if(state.recipes[i].userID == localStorage.getItem('docId')){
 				myRecipes.push(state.recipes[i]);
 			}
 		}
@@ -105,9 +105,7 @@ const actions = {
 		});
 	},
 	updateRecipe({commit},recipe){
-		const recipeId = recipe.id;
-		delete recipe.id;
-		db.collection('recipes').doc(recipeId).update(recipe);
+		db.collection('recipes').doc(recipe.id).update(recipe);
 	}
 
 };

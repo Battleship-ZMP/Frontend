@@ -64,6 +64,7 @@
 						rating: 0,
 						date: this.getDate(),
 						userName: this.$store.getters.getUserData.userName,
+						userID: this.$store.getters.getUserData.docId,
 						photo: this.photo,
 						file: this.file,
 						savedByUsers: []

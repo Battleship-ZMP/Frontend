@@ -5,11 +5,11 @@
 				<img :src="recipe.photo" alt="" class="recipe-img"></v-col>
 				<v-col class="justify-center d-flex flex-column" cols="12" md="4" sm="4">
 					<div class="d-flex justify-end">
-						<v-btn v-if="!this.recipe.savedByUsers.includes(currentUserName) && currentUserName != null ? true : false" depressed color="teal" class="white--text d-flex align-center" @click="saveRecipe">
+						<v-btn v-if="!this.recipe.savedByUsers.includes(currentUserID) && currentUserID != null ? true : false" depressed color="teal" class="white--text d-flex align-center" @click="saveRecipe">
 							<v-icon class="" left>mdi-plus</v-icon>
 							<p class="ma-0">Zapisz</p>
 						</v-btn>
-						<v-btn v-if="this.recipe.savedByUsers.includes(currentUserName) ? true : false" depressed color="grey" class="white--text d-flex align-center" @click="unSaveRecipe">
+						<v-btn v-if="this.recipe.savedByUsers.includes(currentUserID) ? true : false" depressed color="grey" class="white--text d-flex align-center" @click="unSaveRecipe">
 							<v-icon class="" left>mdi-check</v-icon>
 							<p class="ma-0">Zapisano</p>
 						</v-btn>
@@ -46,7 +46,7 @@
 			data(){
 				return{
 					saved: false,
-					currentUserName: localStorage.getItem('userName'),
+					currentUserID: localStorage.getItem('docId'),
 				}
 			},
 			computed:{
@@ -68,20 +68,19 @@
 					if(!recipe.savedByUsers){
 						recipe.savedByUsers = [];
 					}
-					if(!recipe.savedByUsers.includes(localStorage.getItem('userName'))){
-						recipe.savedByUsers.push(localStorage.getItem('userName'));
+					if(!recipe.savedByUsers.includes(localStorage.getItem('docId'))){
+						recipe.savedByUsers.push(localStorage.getItem('docId'));
 						this.saved = true;
 					}
 					this.$store.dispatch('updateRecipe', recipe);
 				},
 				unSaveRecipe(){
 					const recipe = this.recipe;
-					console.log(recipe);
 					if(!recipe.savedByUsers){
 						recipe.savedByUsers = [];
 					}
 					for(let i=0; i<recipe.savedByUsers.length ; i++){
-						if(recipe.savedByUsers[i] == localStorage.getItem('userName')){
+						if(recipe.savedByUsers[i] == localStorage.getItem('docId')){
 							 recipe.savedByUsers.splice(i,1);
 						}
 					}
