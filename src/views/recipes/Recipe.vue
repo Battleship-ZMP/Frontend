@@ -5,11 +5,15 @@
 				<img :src="recipe.photo" alt="" class="recipe-img"></v-col>
 				<v-col class="justify-center d-flex flex-column" cols="12" md="4" sm="4">
 					<div class="d-flex justify-end">
-						<v-btn v-if="!this.recipe.savedByUsers.includes(currentUserID) && currentUserID != null ? true : false" depressed color="teal" class="white--text d-flex align-center" @click="saveRecipe">
+						<v-btn v-if="!this.recipe.savedByUsers.includes(user.docId) && user.docId != null && user.docId != recipe.userID" depressed color="teal" class="white--text d-flex align-center" @click="saveRecipe">
 							<v-icon class="" left>mdi-plus</v-icon>
 							<p class="ma-0">Zapisz</p>
 						</v-btn>
-						<v-btn v-if="this.recipe.savedByUsers.includes(currentUserID) ? true : false" depressed color="grey" class="white--text d-flex align-center" @click="unSaveRecipe">
+						<v-btn v-if="user.docId == recipe.userID" @click="editRecipe" depressed color="teal" class="white--text d-flex align-center">
+							<v-icon class="" left>mdi-pencil</v-icon>
+							<p class="ma-0">Edytuj</p>
+						</v-btn>
+						<v-btn v-if="this.recipe.savedByUsers.includes(user.docId) ? true : false" depressed color="grey" class="white--text d-flex align-center" @click="unSaveRecipe">
 							<v-icon class="" left>mdi-check</v-icon>
 							<p class="ma-0">Zapisano</p>
 						</v-btn>
@@ -37,7 +41,6 @@
 				<h2 class="title">Przepis:</h2>
 				<p>{{recipe.instructions}}</p>
 			</v-row>
-			{{$store.getters.getUserData.userName}}
 		</v-container>
 	</template>
 
@@ -46,12 +49,15 @@
 			data(){
 				return{
 					saved: false,
-					currentUserID: localStorage.getItem('docId'),
+					currentUserID: localStorage.getItem('docId')
 				}
 			},
 			computed:{
 				recipe(){
 					return this.$store.getters.getCurrentRecipe;
+				},
+				user(){
+					return this.$store.getters.getUserData;
 				}
 			},
 			created(){
@@ -86,6 +92,9 @@
 					}
 					this.$store.dispatch('updateRecipe', recipe);
 					this.saved = false;
+				},
+				editRecipe(){
+					this.$router.push('/recipeform/'+this.recipe.id);
 				}
 			}
 		}

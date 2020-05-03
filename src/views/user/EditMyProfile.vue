@@ -62,6 +62,7 @@
 						docId: localStorage.getItem('docId')
 					};
 					console.log(userData);
+					localStorage.setItem('bio', userData.bio);
 					if(userData.file == null){
 						userData.photo = this.url;
 						this.$store.dispatch('editUserWithoutFile', userData);

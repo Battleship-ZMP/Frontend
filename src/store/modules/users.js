@@ -42,6 +42,7 @@ const actions = {
 			uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
 				delete userData.file;
 				userData.photo = downloadURL;
+				localStorage.setItem('photo', userData.photo);
 				const docId = userData.docId;
 				delete userData.docId;
 				db.collection('users').doc(docId).update(userData);

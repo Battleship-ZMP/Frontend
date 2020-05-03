@@ -13,7 +13,7 @@ const state = {
 		date: '',
 		userName: '',
 		photo: '',
-		savedByUsers: []
+		savedByUsers: [],
 
 	}
 	
@@ -54,15 +54,18 @@ const mutations = {
 		state.recipes = recipes;
 	},
 	setCurrentRecipe(state, id){
-
 		state.recipes.forEach((item,index)=>{
 			if(item.id == id){
 				for(let key in item){
 					state.currentRecipe[key] = item[key];
 				}
 			}
-			
 		});
+	},
+	destroyCurrentRecipe(state){
+		for(let key in state.currentRecipe){
+			state.currentRecipe[key] = '';
+		}
 	}
 };
 
@@ -92,7 +95,7 @@ const actions = {
 		commit('setCurrentRecipe', id);
 	},
 	addRecipe({commit},recipeData){
-		const storageRef = fb.storage().ref('avatars/'+localStorage.getItem('userId')+'/'+ recipeData.file.name);
+		const storageRef = fb.storage().ref('recipes/'+localStorage.getItem('userId')+'/'+ recipeData.file.name);
 		const uploadTask = storageRef.put(recipeData.file);
 		uploadTask.on('state_changed', snapshot=>{
 		}, error=>{
@@ -106,6 +109,24 @@ const actions = {
 	},
 	updateRecipe({commit},recipe){
 		db.collection('recipes').doc(recipe.id).update(recipe);
+	},
+	editRecipe({dispatch}, recipeData){
+		if(recipeData.file != null){
+			const storageRef = fb.storage().ref('recipes/'+localStorage.getItem('userId')+'/'+ recipeData.file.name);
+			const uploadTask = storageRef.put(recipeData.file);
+			uploadTask.on('state_changed', snapshot=>{
+			}, error=>{
+			}, ()=>{
+				uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+					delete recipeData.file;
+					recipeData.photo = downloadURL;
+					db.collection('recipes').doc(recipe.id).update(recipeData);
+				});
+			});
+		}else{
+			delete recipeData.file;
+			dispatch('updateRecipe', recipeData);
+		}
 	}
 
 };
