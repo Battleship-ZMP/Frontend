@@ -3,7 +3,9 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
-import firebase from 'firebase/app'
+import firebase from 'firebase'
+import 'firebase/app'
+import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
 
@@ -22,6 +24,7 @@ var firebaseConfig = {
   // Initialize Firebase
   export const fb = firebase.initializeApp(firebaseConfig);
   export const db = firebase.firestore();
+  export const auth = firebase.auth();
 
   new Vue({
   	router,

@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import {auth} from '@/main'
 
 const actions = {
 	logout({commit, getters}){
@@ -10,6 +11,7 @@ const actions = {
 			}
 			
 		}
+		auth.signOut();
 
 	},
 	autoLogout({dispatch}, expirationTime){

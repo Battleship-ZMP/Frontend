@@ -1,32 +1,29 @@
 import Vue from 'vue'
 import axiosAuth from '@/axios-files/axios-auth'
-import {db} from '@/main'
+import {db, auth} from '@/main'
 
 
 const actions = {
 	signUp({commit, dispatch}, authData){
-		axiosAuth.post('/accounts:signUp?key=AIzaSyDL8y7NwSxsYvaNf8M7K_MwMoNMhgMSzow', {
-			email: authData.email,
-			password: authData.password,
-			returnSecureToken: true
-		}).then(res => {
+		auth.createUserWithEmailAndPassword(authData.email, authData.password).then(cred=>{
+			console.log(cred.user);
 			const userData = {
-				userId: res.data.localId,
-				token: res.data.idToken,
+				userId: cred.user.uid,
+				token: cred.user.refreshToken,
 				userName: authData.userName
 			}
 			const now = new Date();
-			const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000);
-			localStorage.setItem('token', res.data.idToken);
-			localStorage.setItem('userId', res.data.localId);
+			const timeToLogout = 3600;
+			const expirationDate = new Date(now.getTime() + timeToLogout * 1000);
+			localStorage.setItem('token', userData.token);
+			localStorage.setItem('userId', userData.userId);
 			localStorage.setItem('expirationDate', expirationDate);
 			commit('setUserData', userData);
+			delete authData.password;
 			dispatch('saveNewUser', authData);
-			dispatch('autoLogout', res.data.expiresIn);
-		})
-		.catch(err => {
-			console.log(err);
+			dispatch('autoLogout', timeToLogout);
 		});
+		
 	},
 	saveNewUser({getters}, authData){
 		if(!getters.getUserData.token){

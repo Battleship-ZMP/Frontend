@@ -1,26 +1,22 @@
 import Vue from 'vue'
 import axiosAuth from '@/axios-files/axios-auth'
 import axiosDb from '@/axios-files/axios-db'
-import {db} from '@/main.js'
+import {db, auth} from '@/main.js'
 
 
 const actions = {
 	signIn({commit, dispatch}, authData){
-		axiosAuth.post('/accounts:signInWithPassword?key=AIzaSyDL8y7NwSxsYvaNf8M7K_MwMoNMhgMSzow', {
-			email: authData.email,
-			password: authData.password,
-			returnSecureToken: true
-		})
-		.then(res => {
+		auth.signInWithEmailAndPassword(authData.email, authData.password).then(cred=>{
 			db.collection('users').get().then((query) =>{
 				query.forEach(function(doc) {
 					if(doc.data().email == authData.email){
 						
 						const now = new Date();
-						const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000);
+						const timeToLogout = 3600;
+						const expirationDate = new Date(now.getTime() + timeToLogout * 1000);
 						const userData = {
-							token: res.data.idToken,
-							userId: res.data.localId,
+							token: cred.user.refreshToken,
+							userId: cred.user.uid,
 							userName: doc.data().userName,
 							expirationDate: expirationDate,
 							photo: doc.data().photo,
@@ -32,12 +28,12 @@ const actions = {
 							localStorage.setItem(key, userData[key]);
 						}
 						commit('setUserData', userData);
-						dispatch('autoLogout', res.data.expiresIn);
+						dispatch('autoLogout', timeToLogout);
 					}
 				});
 			});
-		})
-		.catch(err => console.log(err));
+		});
+		
 	}
 };
 

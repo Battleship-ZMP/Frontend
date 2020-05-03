@@ -25,6 +25,8 @@
 </template>
 
 <script>
+	
+
 	export default{
 		data(){
 			return{
@@ -58,7 +60,6 @@
 					this.dialog = false;
 
 					this.$store.dispatch('signUp', authData);
-					this.$store.dispatch('fetchUser');
 				}
 			}
 		},

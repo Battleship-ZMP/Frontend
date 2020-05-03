@@ -22,8 +22,8 @@
 							</div>
 							<div class="">
 								<div class="caption grey--text">Ocena</div>
-								<v-icon class="" color="yellow darken-1" :size="20" v-for="recipe in recipe.rating" :key="recipe.rating">mdi-star</v-icon>						
-								<v-icon class="" color="yellow darken-1" :size="20" v-for="recipe in 5-recipe.rating" :key="recipe.rating">mdi-star-outline</v-icon>
+								<v-icon class="" color="yellow darken-1" :size="20" v-for="recipe in getRating(recipe.rating)" :key="recipe.rating">mdi-star</v-icon>						
+								<v-icon class="" color="yellow darken-1" :size="20" v-for="recipe in 5-getRating(recipe.rating)" :key="recipe.rating">mdi-star-outline</v-icon>
 							</div>
 						</v-card-text>
 						
@@ -58,9 +58,16 @@
 			}
 		},
 		created(){
-			
 			this.$store.dispatch('loadRecipes');
-
+		},
+		methods:{
+			getRating(rating){
+				if(rating.length != 0){
+					return rating.reduce((a,b)=> {return a+b;}) / rating.length;
+				}else{
+					return 0;
+				}
+			}
 		}
 	}
 </script>

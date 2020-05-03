@@ -55,10 +55,8 @@
 					this.dialog = false;
 					this.$store.dispatch('signIn', authData);
 				}
-			},
-			metoda(){
-				console.log('login zamkniety');
 			}
+			
 		},
 		components:{
 			Register

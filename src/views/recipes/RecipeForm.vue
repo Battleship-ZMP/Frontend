@@ -73,7 +73,7 @@
 						ingredients: this.recipe.ingredients,
 						instructions: this.recipe.instructions,
 						name: this.recipe.name,
-						rating: 0,
+						rating: [],
 						date: this.getDate(),
 						userName: this.$store.getters.getUserData.userName,
 						userID: this.$store.getters.getUserData.docId,

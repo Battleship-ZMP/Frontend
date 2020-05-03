@@ -2,19 +2,7 @@ import Vue from 'vue'
 import axios from '@/axios-files/axios-db'
 
 const actions = {
-	fetchUser({getters}){
-		
-		if(!getters.getToken){
-			return
-		}
-		axios.get('/users.json?auth=' + getters.getToken)
-		.then(res => {
-			console.log(res);
-		})
-		.catch(err => {
-			console.log(err);
-		});
-	},
+	
 	autoLogin({commit, getters, dispatch}){
 		const token = localStorage.getItem('token');
 		if(!token){

@@ -21,6 +21,11 @@ const state = {
 
 const getters = {
 	getRecipes(state){
+		for(let i=0 ;i<state.recipes.length ;i++){
+			if(!Array.isArray(state.recipes[i].rating)){
+				state.recipes[i].rating = [];
+			}
+		}
 		return state.recipes;
 	},
 	getCurrentRecipe(state){

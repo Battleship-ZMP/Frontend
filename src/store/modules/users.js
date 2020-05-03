@@ -33,7 +33,7 @@ const actions = {
 		})
 		.catch(err => console.log(err));
 	},
-	editUserWithFile({dispatch}, userData){
+	editUserWithFile({dispatch, commit}, userData){
 		const storageRef = fb.storage().ref('avatars/'+localStorage.getItem('userId')+'/'+ userData.file.name);
 		const uploadTask = storageRef.put(userData.file);
 		uploadTask.on('state_changed', snapshot=>{
@@ -43,6 +43,7 @@ const actions = {
 				delete userData.file;
 				userData.photo = downloadURL;
 				localStorage.setItem('photo', userData.photo);
+				commit('setUserData', userData);
 				const docId = userData.docId;
 				delete userData.docId;
 				db.collection('users').doc(docId).update(userData);

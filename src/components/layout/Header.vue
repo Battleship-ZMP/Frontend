@@ -26,7 +26,7 @@
 			<v-list dense nav class="py-0">
 				<v-row class="align-center justify-center mt-5 mb-3 flex-column" >
 					<v-avatar class="" size="100">
-						<img class="" src="https://cdn.vuetifyjs.com/images/john.jpg" alt="">
+						<img class="" :src="user.photo" alt="">
 					</v-avatar>
 					<p class="white--text subtitle-1 mt-1">
 						{{this.userName}}
@@ -83,11 +83,17 @@
 					this.loginButton = false;
 					return this.$store.getters.getUserData.userName;
 				}
+			},
+			user(){
+				return this.$store.getters.getUserData;
 			}
 		},
 		methods: {
 			logout(){
 				this.$store.dispatch('logout');
+				if(this.$route.path != '/'){
+					this.$router.push('/');
+				}
 			}
 		}
 	}
