@@ -88,12 +88,6 @@
 			Register
 		},
 		computed:{
-			googleLoginErrors(){
-				return this.$store.getters.getGoogleErrors;
-			},
-			facebookLoginErrors(){
-				return this.$store.getters.getFacebookErrors;
-			},
 			loginErrors(){
 				return this.$store.getters.getLoginErrors;
 			}
@@ -111,28 +105,7 @@
 					this.loading = false;
 				}
 			},
-			googleLoginErrors(){
-				if(this.loginErrors.code == 'auth/user-not-found'){
-					this.alertText = 'Nie znaleziono użytkownika, spróbuj ponownie';
-					this.snackbar = true;
-					this.loading = false;
-				}else if(this.loginErrors.code == 'auth/wrong-password'){
-					this.alertText = 'Nieprawidłowe hasło!';
-					this.snackbar = true;
-					this.loading = false;
-				}
-			},
-			facebookLoginErrors(){
-				if(this.loginErrors.code == 'auth/user-not-found'){
-					this.alertText = 'Nie znaleziono użytkownika, spróbuj ponownie';
-					this.snackbar = true;
-					this.loading = false;
-				}else if(this.loginErrors.code == 'auth/wrong-password'){
-					this.alertText = 'Nieprawidłowe hasło!';
-					this.snackbar = true;
-					this.loading = false;
-				}
-			}
+
 		}
 	}
 </script>

@@ -23,7 +23,7 @@
 					<div class="d-flex">
 						<v-icon class="" color="yellow darken-1" :size="20" v-for="(recipe, index) in rating" :key="recipe.rating">mdi-star</v-icon>						
 						<v-icon class="" color="yellow darken-1" :size="20" v-for="(recipe,index) in 5-rating" :key="recipe.rating">mdi-star-outline</v-icon>
-						<v-dialog v-model="dialog"  max-width="400">
+						<v-dialog v-model="dialog" persistent max-width="400">
 							<template v-slot:activator="{ on }">
 								<v-btn @click="selectedStar = null" v-on="on" color="teal" depressed class="ml-2 d-flex white--text align-center">
 									<v-icon class="" left>mdi-star</v-icon>
@@ -40,7 +40,7 @@
 								<v-divider></v-divider>
 								<v-card-actions>
 									<v-btn color="teal" class="white--text" @click="rateRecipe">Wyślij</v-btn>
-									<v-btn color="error" class="white--text" @click="dialog = false">Zamknij</v-btn>
+									<v-btn color="error" class="white--text" @click="closeDialog">Zamknij</v-btn>
 								</v-card-actions></v-card>
 							</v-dialog>
 						</div>
@@ -135,6 +135,9 @@
 						this.$router.push('/recipeform/'+this.recipe.id);
 					},
 					rateRecipe(){
+						if(this.selectedStar == null){
+							return;
+						}
 						if(!Array.isArray(this.recipe.rating)){
 							this.recipe.rating = [];
 						}
@@ -149,6 +152,13 @@
 					fillStars(index){
 						for(let i=0 ; i<index+1 ;i++){
 							this.starType[i].name = 'mdi-star';
+						}
+					},
+					closeDialog(){
+						this.dialog = false;
+						for(let i =0 ;i< 5 ;i++){
+							this.starType[i].name = 'mdi-star-outline';
+							this.starType[i].size = 50;
 						}
 					},
 					resetStars(){

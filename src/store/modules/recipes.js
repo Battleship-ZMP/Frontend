@@ -88,7 +88,7 @@ const actions = {
 				recipes.push(recipe);
 				
 			});
-			
+			console.log(recipes);
 			commit('setRecipes', recipes);
 			const routerParamId = router.history.current.params.id;
 			if(routerParamId){
@@ -99,7 +99,7 @@ const actions = {
 	setCurrentRecipe({commit, dispatch}, id){
 		commit('setCurrentRecipe', id);
 	},
-	addRecipe({commit},recipeData){
+	addRecipe({dispatch},recipeData){
 		if(recipeData.file != null){
 			const storageRef = fb.storage().ref('recipes/'+localStorage.getItem('userId')+'/'+ recipeData.file.name);
 			const uploadTask = storageRef.put(recipeData.file);
@@ -110,12 +110,14 @@ const actions = {
 					delete recipeData.file;
 					recipeData.photo = downloadURL;
 					db.collection('recipes').add(recipeData);
+					dispatch('loadRecipes');
 				});
 			});
 		}else{
 			delete recipeData.file;
 			recipeData.photo = 'https://via.placeholder.com/150';
 			db.collection('recipes').add(recipeData);
+			dispatch('loadRecipes');
 		}
 		
 	},
@@ -139,6 +141,27 @@ const actions = {
 			delete recipeData.file;
 			dispatch('updateRecipe', recipeData);
 		}
+	},
+	sortRecipes({commit}, sortData){
+		// var rating = 0;
+		// if(sortData.sortType == 'rating'){
+
+		// }
+		db.collection('recipes').orderBy(sortData.sortBy, sortData.sortType).get().then(query=>{
+			const recipes = [];
+			query.forEach(function(doc) {
+
+				const recipe = {};
+				for(let key in doc.data()){
+					recipe[key] = doc.data()[key];
+				}
+				recipe['id'] = doc.id;
+				recipes.push(recipe);
+				
+			});
+			
+			commit('setRecipes', recipes);
+		})
 	}
 
 };

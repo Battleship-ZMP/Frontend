@@ -1,5 +1,11 @@
 <template>
 	<v-container class="">
+		<v-chip class="mr-2 sort-chip" @click="sortRecipes('date', 'asc')" filter filter-icon="mdi-chevron-up" :input-value="true">Czas dodania</v-chip>
+		<v-chip class="mr-2 sort-chip" filter filter-icon="mdi-chevron-down" @click="sortRecipes('date', 'desc')" :input-value="true">Czas dodania</v-chip>
+		<v-chip class="mr-2 sort-chip" @click="sortRecipes('name', 'asc')" filter filter-icon="mdi-chevron-up" :input-value="true">Nazwa</v-chip>
+		<v-chip class="mr-2 sort-chip" @click="sortRecipes('name', 'desc')" filter filter-icon="mdi-chevron-down" :input-value="true">Nazwa</v-chip>
+		<v-chip class="mr-2 sort-chip" @click="sortRecipes('rating', 'asc')" filter filter-icon="mdi-chevron-up" :input-value="true">Ocena</v-chip>
+		<v-chip class="mr-2 sort-chip" filter filter-icon="mdi-chevron-down" @click="sortRecipes('rating', 'desc')" :input-value="true">Ocena</v-chip>
 		<v-row class="">
 			<v-col class="" cols="12" md="4" sm="6" v-for="(recipe,index) in recipes" :key="recipe.id">
 				<router-link class="" :to="`/recipe/${recipe.id}`" style="text-decoration: none;">
@@ -57,9 +63,6 @@
 				}
 			}
 		},
-		created(){
-			this.$store.dispatch('loadRecipes');
-		},
 		methods:{
 			getRating(rating){
 				if(rating.length != 0){
@@ -67,9 +70,21 @@
 				}else{
 					return 0;
 				}
+			},
+			sortRecipes(sortBy, sortType){
+				this.$store.dispatch('sortRecipes', {
+					sortBy: sortBy,
+					sortType: sortType
+				});
 			}
 		}
 	}
 </script>
+
+<style>
+	.sort-chip{
+		cursor: pointer!important;
+	}
+</style>
 
 
