@@ -19,7 +19,7 @@
 								<img v-if="recipe.photo != ''" :src="recipe.photo" width="100%" height="auto" alt="">
 							</div>
 						</div>
-						<v-file-input class="" color="teal" label="Zdjęcie" @change="avatar" counter show-size prepend-icon="mdi-camera" :rules="$route.params.id == null ? [rules.required] : []"></v-file-input>
+						<v-file-input class="" color="teal" label="Zdjęcie" @change="avatar" counter show-size prepend-icon="mdi-camera" ></v-file-input>
 					</v-col>
 				</v-row>
 				
@@ -53,33 +53,33 @@
 
 					if(this.$route.params.id != null){
 						const recipeData = {
-						description: this.recipe.description,
-						ingredients: this.recipe.ingredients,
-						instructions: this.recipe.instructions,
-						name: this.recipe.name,
-						rating: this.recipe.rating,
-						date: this.getDate(),
-						userName: this.$store.getters.getUserData.userName,
-						userID: this.$store.getters.getUserData.docId,
-						file: this.file,
-						savedByUsers: this.recipe.savedByUsers,
-						photo: this.recipe.photo,
-						id: this.recipe.id
-					};
+							description: this.recipe.description,
+							ingredients: this.recipe.ingredients,
+							instructions: this.recipe.instructions,
+							name: this.recipe.name,
+							rating: this.recipe.rating,
+							date: this.getDate(),
+							userName: this.$store.getters.getUserData.userName,
+							userID: this.$store.getters.getUserData.docId,
+							file: this.file,
+							savedByUsers: this.recipe.savedByUsers,
+							photo: this.recipe.photo,
+							id: this.recipe.id
+						};
 						this.$store.dispatch('editRecipe', recipeData);
 					}else{
 						const recipeData = {
-						description: this.recipe.description,
-						ingredients: this.recipe.ingredients,
-						instructions: this.recipe.instructions,
-						name: this.recipe.name,
-						rating: [],
-						date: this.getDate(),
-						userName: this.$store.getters.getUserData.userName,
-						userID: this.$store.getters.getUserData.docId,
-						file: this.file,
-						savedByUsers: [],
-					};
+							description: this.recipe.description,
+							ingredients: this.recipe.ingredients,
+							instructions: this.recipe.instructions,
+							name: this.recipe.name,
+							rating: [],
+							date: this.getDate(),
+							userName: this.$store.getters.getUserData.userName,
+							userID: this.$store.getters.getUserData.docId,
+							file: this.file,
+							savedByUsers: [],
+						};
 						console.log(recipeData);
 						this.$store.dispatch('addRecipe', recipeData);
 					}

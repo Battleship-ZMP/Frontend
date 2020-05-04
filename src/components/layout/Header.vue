@@ -25,7 +25,7 @@
 		<v-navigation-drawer v-model="drawer" color="teal" left app dark>
 			<v-list dense nav class="py-0">
 				<v-row class="align-center justify-center mt-5 mb-3 flex-column" >
-					<v-avatar class="" size="100">
+					<v-avatar v-if="this.user.token" class="" size="100">
 						<img class="" :src="user.photo" alt="">
 					</v-avatar>
 					<p class="white--text subtitle-1 mt-1">

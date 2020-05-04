@@ -3,6 +3,21 @@ import axiosAuth from '@/axios-files/axios-auth'
 import axiosDb from '@/axios-files/axios-db'
 import {db, auth} from '@/main.js'
 
+const state = {
+	errors: null
+};
+
+const getters = {
+	getLoginErrors(state){
+		return state.errors;
+	}
+};
+
+const mutations = {
+	setErrors(state, errors){
+		state.errors = errors;
+	}
+};
 
 const actions = {
 	signIn({commit, dispatch}, authData){
@@ -32,11 +47,14 @@ const actions = {
 					}
 				});
 			});
+		}).catch(err=>{
+			console.log('no i dupa', err);
+			commit('setErrors', err);
 		});
 		
 	}
 };
 
 export default {
-	actions
+	state, getters, mutations, actions
 };

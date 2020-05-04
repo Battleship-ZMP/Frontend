@@ -100,17 +100,24 @@ const actions = {
 		commit('setCurrentRecipe', id);
 	},
 	addRecipe({commit},recipeData){
-		const storageRef = fb.storage().ref('recipes/'+localStorage.getItem('userId')+'/'+ recipeData.file.name);
-		const uploadTask = storageRef.put(recipeData.file);
-		uploadTask.on('state_changed', snapshot=>{
-		}, error=>{
-		}, ()=>{
-			uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-				delete recipeData.file;
-				recipeData.photo = downloadURL;
-				db.collection('recipes').add(recipeData);
+		if(recipeData.file != null){
+			const storageRef = fb.storage().ref('recipes/'+localStorage.getItem('userId')+'/'+ recipeData.file.name);
+			const uploadTask = storageRef.put(recipeData.file);
+			uploadTask.on('state_changed', snapshot=>{
+			}, error=>{
+			}, ()=>{
+				uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+					delete recipeData.file;
+					recipeData.photo = downloadURL;
+					db.collection('recipes').add(recipeData);
+				});
 			});
-		});
+		}else{
+			delete recipeData.file;
+			recipeData.photo = 'https://via.placeholder.com/150';
+			db.collection('recipes').add(recipeData);
+		}
+		
 	},
 	updateRecipe({commit},recipe){
 		db.collection('recipes').doc(recipe.id).update(recipe);

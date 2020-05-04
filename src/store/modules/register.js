@@ -2,6 +2,21 @@ import Vue from 'vue'
 import axiosAuth from '@/axios-files/axios-auth'
 import {db, auth} from '@/main'
 
+const state = {
+	errors: null
+};
+
+const getters = {
+	getSignUpErrors(state){
+		return state.errors;
+	}
+}
+
+const mutations = {
+	setSignUpErrors(state, errors){
+		state.errors = errors;
+	}
+};
 
 const actions = {
 	signUp({commit, dispatch}, authData){
@@ -22,6 +37,8 @@ const actions = {
 			delete authData.password;
 			dispatch('saveNewUser', authData);
 			dispatch('autoLogout', timeToLogout);
+		}).catch(err=>{
+			commit('setSignUpErrors', err);
 		});
 		
 	},
@@ -35,5 +52,5 @@ const actions = {
 };
 
 export default {
-	actions
+	state, getters, mutations, actions
 };

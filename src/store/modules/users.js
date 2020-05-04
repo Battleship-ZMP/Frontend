@@ -50,10 +50,11 @@ const actions = {
 			});
 		});
 	},
-	editUserWithoutFile({dispatch}, userData){
+	editUserWithoutFile({dispatch, commit}, userData){
 		const docId = userData.docId;
 		delete userData.docId;
 		delete userData.file;
+		commit('setUserData', userData);
 		db.collection('users').doc(docId).update(userData);
 	}
 };

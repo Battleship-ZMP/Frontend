@@ -17,10 +17,16 @@
 			</v-card-text>
 			<v-divider></v-divider>
 			<v-card-actions>
-				<v-btn color="teal" class="white--text" @click="submit">Wyślij</v-btn>
+				<v-btn color="teal" class="white--text" :loading="loading" @click="submit">Wyślij</v-btn>
 				<v-btn color="error" class="white--text" @click="dialog = false">Zamknij</v-btn>
 			</v-card-actions>
 		</v-card>
+		<v-snackbar v-model="snackbar" :timeout="4000" class="white--text" color="error" :top="true">
+			{{ alertText  }}
+			<v-btn color="white" text @click="snackbar = false">
+				Close
+			</v-btn>
+		</v-snackbar>
 	</v-dialog>
 </template>
 
@@ -31,7 +37,10 @@
 		data(){
 			return{
 				email: '',
+				alertText: '',
+				snackbar: false,
 				password: '',
+				loading: false,
 				passwordConfirm: '',
 				userName: '',
 				rules: {
@@ -57,7 +66,7 @@
 						password: this.password,
 						userName: this.userName
 					};
-					this.dialog = false;
+					this.loading = true;
 
 					this.$store.dispatch('signUp', authData);
 				}
@@ -66,10 +75,22 @@
 		computed:{
 			users(){
 				return this.$store.getters.getUsers;
+			},
+			signUpErrors(){
+				return this.$store.getters.getSignUpErrors;
 			}
 		},
 		created(){
 			this.$store.dispatch('getUsers');
+		},
+		watch:{
+			signUpErrors(){
+				if(this.signUpErrors.code == 'auth/email-already-in-use'){
+					this.alertText = 'Ten email jest już zarejestrowany';
+					this.snackbar = true;
+					this.loading = false;
+				}
+			}
 		}
 	}
 </script>

@@ -7,6 +7,7 @@ import login from './modules/login';
 import users from './modules/users';
 import recipes from './modules/recipes';
 import files from './modules/files';
+import googleAuth from './modules/googleAuth';
 
 Vue.use(Vuex)
 
@@ -19,6 +20,7 @@ export default new Vuex.Store({
 		users,
 		recipes,
 		files,
+		googleAuth
 	},
 	state:{
 		userData:{
