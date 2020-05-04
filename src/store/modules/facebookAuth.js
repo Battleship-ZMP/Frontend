@@ -1,24 +1,24 @@
-import {fb, db, googleProvider} from '@/main'
+import {fb, db, facebookProvider} from '@/main'
 
 const state = {
 	errors: null
 };
 
 const getters = {
-	getGoogleErrors(state){
+	getFacebookErrors(state){
 		return state.errors;
 	}
 }
 
 const mutations = {
-	setGoogleErrors(state, errors){
+	setFacebookErrors(state, errors){
 		state.errors = errors;
 	}
 };
 
 const actions = {
-	signInWithGoogle({commit, getters, dispatch}){
-		fb.auth().signInWithPopup(googleProvider).then(function(result) {
+	signInWithFacebook({commit, getters, dispatch}){
+		fb.auth().signInWithPopup(facebookProvider).then(function(result) {
 			var users = getters.getUsers;
 			var isUserExists = false;
 			var user = result.user;
@@ -37,32 +37,32 @@ const actions = {
 				db.collection('users').add(userData);
 				userData.token = user.refreshToken;
 				userData.userId = user.uid;
-				dispatch('fetchGoogleUser', userData);
+				dispatch('fetchFacebookUser', userData);
 
 			}
 		}).catch(function(errors) {
-			commit('setGoogleErrors', errors);
+			commit('setFacebookErrors', errors);
 		});
 	},
-	fetchGoogleUser({commit,dispatch}, userData){
+	fetchFacebookUser({commit,dispatch}, userData){
 		db.collection('users').get().then(query=>{
 			query.forEach(doc=>{
 				if(doc.data().email == userData.email){
-					const googleUser = {};
+					const facebookUser = {};
 					for(let key in doc.data()){
-						googleUser[key] = doc.data()[key];
+						facebookUser[key] = doc.data()[key];
 					}
-					googleUser.token = userData.token;
-					googleUser.userId = userData.userId;
-					googleUser.docId = doc.id;
+					facebookUser.token = userData.token;
+					facebookUser.userId = userData.userId;
+					facebookUser.docId = doc.id;
 					const now = new Date();
 					const timeToLogout = 3600;
 					const expirationDate = new Date(now.getTime() + timeToLogout * 1000);
-					googleUser.expirationDate = expirationDate;
-					for(let key in googleUser){
-						localStorage.setItem(key, googleUser[key]);
+					facebookUser.expirationDate = expirationDate;
+					for(let key in facebookUser){
+						localStorage.setItem(key, facebookUser[key]);
 					}
-					commit('setUserData', googleUser);
+					commit('setUserData', facebookUser);
 					dispatch('autoLogout', timeToLogout);
 				}
 			})

@@ -14,8 +14,12 @@
 				</v-form>
 				<p>lub zaloguj się przez:</p>
 				<v-btn class="" @click="signInWithGoogle">
-					<v-icon class="">mdi-plus</v-icon>
+					<v-icon left class="">mdi-plus</v-icon>
 					<p class="ma-0">Google</p>
+				</v-btn>
+				<v-btn class="white--text" color="#3578E5" @click="signInWithFacebook">
+					<v-icon left class="">mdi-facebook</v-icon>
+					<p class="ma-0">Facebook</p>
 				</v-btn>
 				<p>Nie masz jeszcze konta? Zarejestruj się!</p>
 				<Register />
@@ -73,13 +77,23 @@
 			},
 			signInWithGoogle(){
 				this.$store.dispatch('signInWithGoogle');
+			},
+			signInWithFacebook(){
+				this.$store.dispatch('signInWithFacebook');
 			}
+
 			
 		},
 		components:{
 			Register
 		},
 		computed:{
+			googleLoginErrors(){
+				return this.$store.getters.getGoogleErrors;
+			},
+			facebookLoginErrors(){
+				return this.$store.getters.getFacebookErrors;
+			},
 			loginErrors(){
 				return this.$store.getters.getLoginErrors;
 			}
@@ -87,6 +101,28 @@
 		},
 		watch:{
 			loginErrors(){
+				if(this.loginErrors.code == 'auth/user-not-found'){
+					this.alertText = 'Nie znaleziono użytkownika, spróbuj ponownie';
+					this.snackbar = true;
+					this.loading = false;
+				}else if(this.loginErrors.code == 'auth/wrong-password'){
+					this.alertText = 'Nieprawidłowe hasło!';
+					this.snackbar = true;
+					this.loading = false;
+				}
+			},
+			googleLoginErrors(){
+				if(this.loginErrors.code == 'auth/user-not-found'){
+					this.alertText = 'Nie znaleziono użytkownika, spróbuj ponownie';
+					this.snackbar = true;
+					this.loading = false;
+				}else if(this.loginErrors.code == 'auth/wrong-password'){
+					this.alertText = 'Nieprawidłowe hasło!';
+					this.snackbar = true;
+					this.loading = false;
+				}
+			},
+			facebookLoginErrors(){
 				if(this.loginErrors.code == 'auth/user-not-found'){
 					this.alertText = 'Nie znaleziono użytkownika, spróbuj ponownie';
 					this.snackbar = true;
