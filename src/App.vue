@@ -21,7 +21,7 @@
     created(){
       this.$store.dispatch('autoLogin');
       this.$store.dispatch('loadRecipes');
-
+      this.$store.dispatch('getUsers');
     },
 
     data: () => ({

@@ -21,17 +21,19 @@ const mutations = {
 
 const actions = {
 	getUsers({commit}){
-		axios.get('/users.json')
-		.then(res => {
-			const userNames = [];
-			for(let key in res.data){
-				userNames.push(res.data[key].userName);
-
-			}
-			
-			commit('setUsers', userNames);
-		})
-		.catch(err => console.log(err));
+		db.collection('users').get().then(query=>{
+			var users = [];
+			query.forEach(doc=>{
+				var user = {};
+				for(let key in doc.data()){
+					user[key] = doc.data()[key];
+				}
+				user.docId = doc.id;
+				users.push(user);
+			});
+			commit('setUsers', users);
+		});
+		
 	},
 	editUserWithFile({dispatch, commit}, userData){
 		const storageRef = fb.storage().ref('avatars/'+localStorage.getItem('userId')+'/'+ userData.file.name);

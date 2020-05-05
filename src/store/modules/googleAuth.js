@@ -23,25 +23,25 @@ const actions = {
 			var isUserExists = false;
 			var user = result.user;
 			for(let i=0 ; i < users.length ; i++){
-				if(users[i].userName == user.displayName ){
+				if(users[i].email == user.email ){
 					isUserExists = true;
 				}
 			}
+			const userData = {
+				userName: user.displayName,
+				photo: user.photoURL,
+				email: user.email,
+				bio: ''
+			};
 			if(!isUserExists){
-				const userData = {
-					userName: user.displayName,
-					photo: user.photoURL,
-					email: user.email,
-					bio: ''
-				};
 				db.collection('users').add(userData);
-				userData.token = user.refreshToken;
-				userData.userId = user.uid;
-				dispatch('fetchGoogleUser', userData);
-
 			}
+			userData.token = user.refreshToken;
+			userData.userId = user.uid;
+			dispatch('fetchGoogleUser', userData);
 		}).catch(function(errors) {
 			commit('setGoogleErrors', errors);
+			console.log(errors);
 		});
 	},
 	fetchGoogleUser({commit,dispatch}, userData){
