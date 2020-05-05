@@ -12,11 +12,11 @@ const getters = {
 	getUsers(state){
 		return state.users;
 	},
-	getRecipeUser(state, getters){
+	getRecipeUserName(state, getters){
 		const userID = getters.getCurrentRecipe.userID;
 		for(let i=0 ; i<state.users.length ; i++){
 			if(state.users[i].docId == userID){
-				return state.users[i];
+				return state.users[i].userName;
 			}
 		}
 	},

@@ -45,7 +45,7 @@
 							</v-dialog>
 						</div>
 						<div>
-							<p>Autor: {{recipeUser.userName}}</p>
+							<p>Autor: {{recipeUserName}}</p>
 						</div>
 					</v-col>
 				</v-row>
@@ -96,8 +96,8 @@
 							return 0;
 						}
 					},
-					recipeUser(){
-						return this.$store.getters.getRecipeUser;
+					recipeUserName(){
+						return this.$store.getters.getRecipeUserName;
 					}
 					
 				},

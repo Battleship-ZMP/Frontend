@@ -13,7 +13,8 @@ const state = {
 		date: '',
 		photo: '',
 		savedByUsers: [],
-	}
+	},
+	recipeFormLoading: false
 	
 };
 
@@ -56,6 +57,9 @@ const getters = {
 				return state.recipes[i];
 			}
 		}
+	},
+	getRecipeFormLoading(state){
+		return state.recipeFormLoading;
 	}
 };
 
@@ -76,6 +80,9 @@ const mutations = {
 		for(let key in state.currentRecipe){
 			state.currentRecipe[key] = '';
 		}
+	},
+	setRecipeFormLoading(state, loading){
+		state.recipeFormLoading = loading;
 	}
 };
 
@@ -93,7 +100,6 @@ const actions = {
 				recipes.push(recipe);
 				
 			});
-			console.log(recipes);
 			commit('setRecipes', recipes);
 			const routerParamId = router.history.current.params.id;
 			if(routerParamId){
@@ -104,7 +110,7 @@ const actions = {
 	setCurrentRecipe({commit, dispatch}, id){
 		commit('setCurrentRecipe', id);
 	},
-	addRecipe({dispatch},recipeData){
+	addRecipe({dispatch, commit},recipeData){
 		if(recipeData.file != null){
 			const storageRef = fb.storage().ref('recipes/'+localStorage.getItem('userId')+'/'+ recipeData.file.name);
 			const uploadTask = storageRef.put(recipeData.file);
@@ -116,6 +122,7 @@ const actions = {
 					recipeData.photo = downloadURL;
 					db.collection('recipes').add(recipeData);
 					dispatch('loadRecipes');
+					commit('setRecipeFormLoading', false);
 				});
 			});
 		}else{
@@ -123,13 +130,14 @@ const actions = {
 			recipeData.photo = 'https://via.placeholder.com/150';
 			db.collection('recipes').add(recipeData);
 			dispatch('loadRecipes');
+			commit('setRecipeFormLoading', false);
 		}
 		
 	},
 	updateRecipe({commit},recipe){
 		db.collection('recipes').doc(recipe.id).update(recipe);
 	},
-	editRecipe({dispatch}, recipeData){
+	editRecipe({dispatch, commit}, recipeData){
 		if(recipeData.file != null){
 			const storageRef = fb.storage().ref('recipes/'+localStorage.getItem('userId')+'/'+ recipeData.file.name);
 			const uploadTask = storageRef.put(recipeData.file);
@@ -140,11 +148,13 @@ const actions = {
 					delete recipeData.file;
 					recipeData.photo = downloadURL;
 					db.collection('recipes').doc(recipe.id).update(recipeData);
+					commit('setRecipeFormLoading', false);
 				});
 			});
 		}else{
 			delete recipeData.file;
 			dispatch('updateRecipe', recipeData);
+			commit('setRecipeFormLoading', false);
 		}
 	},
 	sortRecipes({commit, getters}, sortData){

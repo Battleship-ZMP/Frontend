@@ -13,14 +13,16 @@
 					<v-text-field class="" color="teal" label="Hasło" v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :type="show1 ? 'text' : 'password'" @click:append="show1 = !show1" :rules="[rules.required, rules.minLength]"></v-text-field>
 				</v-form>
 				<p>lub zaloguj się przez:</p>
-				<v-btn class="" @click="signInWithGoogle">
-					<v-icon left class="">mdi-plus</v-icon>
-					<p class="ma-0">Google</p>
-				</v-btn>
-				<v-btn class="white--text" color="#3578E5" @click="signInWithFacebook">
-					<v-icon left class="">mdi-facebook</v-icon>
-					<p class="ma-0">Facebook</p>
-				</v-btn>
+				<div class="mb-2 d-flex flex-column">
+					<v-btn class="mb-2 white--text" color="#dd4b39" @click="signInWithGoogle">
+						<v-icon left class="">mdi-google-plus</v-icon>
+						<p class="ma-0">Google</p>
+					</v-btn>
+					<v-btn class="white--text " color="#3578E5" @click="signInWithFacebook">
+						<v-icon left class="">mdi-facebook</v-icon>
+						<p class="ma-0">Facebook</p>
+					</v-btn>
+				</div>
 				<p>Nie masz jeszcze konta? Zarejestruj się!</p>
 				<Register />
 				
@@ -31,7 +33,7 @@
 				<v-btn color="error" class="white--text" @click="dialog = false">Zamknij</v-btn>
 			</v-card-actions>
 		</v-card>
-		<v-snackbar v-model="snackbar" :timeout="4000" class="white--text" color="error" :top="true">
+		<v-snackbar v-model="snackbar" :timeout="4000" class="white--text" color="error" right>
 			{{ alertText  }}
 			<v-btn color="white" text @click="snackbar = false">
 				Close
@@ -90,6 +92,9 @@
 		computed:{
 			loginErrors(){
 				return this.$store.getters.getLoginErrors;
+			},
+			facebookLoginErrors(){
+				return this.$store.getters.getFacebookErrors;
 			}
 
 		},
@@ -105,6 +110,13 @@
 					this.loading = false;
 				}
 			},
+			facebookLoginErrors(){
+				if(this.facebookLoginErrors.code == 'auth/account-exists-with-different-credential'){
+					this.alertText = 'Ten email jest juz zarejestrowany. Spróbuj zalogować się przez google lub zresetuj hasło';
+					this.snackbar = true;
+					this.loading = false;
+				}
+			}
 
 		}
 	}

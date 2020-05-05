@@ -27,8 +27,14 @@
 		</v-card-text>
 		<v-divider></v-divider>
 		<v-card-actions class="pa-4">
-			<v-btn color="teal" class="white--text" @click="submit">Wyślij</v-btn>
+			<v-btn color="teal" class="white--text" :loading="loading" @click="submit">Wyślij</v-btn>
 		</v-card-actions>
+		<v-snackbar v-model="snackbar" :timeout="4000" class="white--text" color="teal" right>
+			{{ alertText  }}
+			<v-btn color="white" text @click="snackbar = false">
+				Close
+			</v-btn>
+		</v-snackbar>
 	</v-card>
 </template>
 
@@ -38,7 +44,8 @@
 	export default{
 		data(){
 			return{
-
+				snackbar: false,
+				alertText: '',
 				rules:{
 					required: v => !!v || 'To pole jest wymagane!',
 				},
@@ -65,6 +72,7 @@
 							photo: this.recipe.photo,
 							id: this.recipe.id
 						};
+						this.$store.commit('setRecipeFormLoading', true);
 						this.$store.dispatch('editRecipe', recipeData);
 					}else{
 						const recipeData = {
@@ -78,6 +86,7 @@
 							file: this.file,
 							savedByUsers: [],
 						};
+						this.$store.commit('setRecipeFormLoading', true);
 						console.log(recipeData);
 						this.$store.dispatch('addRecipe', recipeData);
 					}
@@ -104,11 +113,20 @@
 		computed:{
 			recipe(){
 				return this.$store.getters.getCurrentRecipe;
+			},
+			loading(){
+				return this.$store.getters.getRecipeFormLoading;
 			}
 		},
 		watch:{
 			'$route.path'(){
 				this.$store.commit('destroyCurrentRecipe');
+			},
+			loading(){
+				if(this.loading == false){
+					this.snackbar = true;
+					this.alertText = 'Pomyślnie dodano/edytowano przepis!';
+				}
 			}
 		}
 
