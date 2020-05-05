@@ -11,10 +11,8 @@ const state = {
 		name: '',
 		rating: 0,
 		date: '',
-		userName: '',
 		photo: '',
 		savedByUsers: [],
-
 	}
 	
 };
@@ -51,6 +49,13 @@ const getters = {
 			}
 		}
 		return myRecipes;
+	},
+	getRecipe:(state)=>(recipeId)=>{
+		for(let i =0 ; i<state.recipes.length ; i++){
+			if(state.recipes[i].id == recipeId){
+				return state.recipes[i];
+			}
+		}
 	}
 };
 
@@ -142,26 +147,55 @@ const actions = {
 			dispatch('updateRecipe', recipeData);
 		}
 	},
-	sortRecipes({commit}, sortData){
-		// var rating = 0;
-		// if(sortData.sortType == 'rating'){
-
-		// }
-		db.collection('recipes').orderBy(sortData.sortBy, sortData.sortType).get().then(query=>{
-			const recipes = [];
-			query.forEach(function(doc) {
-
-				const recipe = {};
-				for(let key in doc.data()){
-					recipe[key] = doc.data()[key];
+	sortRecipes({commit, getters}, sortData){
+		
+		if(sortData.sortBy == 'rating'){
+			var recipes = getters.getRecipes;
+			var sortRatings = [];
+			for(let i =0 ;i<recipes.length; i++){
+				if(recipes[i].rating.length != 0){
+					var rating = recipes[i].rating.reduce((a,b)=> {return a+b;}) / recipes[i].rating.length;
+				}else{
+					var rating = 0;
 				}
-				recipe['id'] = doc.id;
-				recipes.push(recipe);
 				
-			});
+				sortRatings.push([recipes[i].id, rating]);
+			}
+			if(sortData.sortType == 'asc'){
+				sortRatings.sort((a,b)=>{
+					return a[1] - b[1];
+				});
+			}else{
+				sortRatings.sort((a,b)=>{
+					return b[1] - a[1];
+				});
+			}
+			var sortedRecipes = [];
+			for(let i=0 ; i<sortRatings.length ;i++){
+				sortedRecipes.push(getters.getRecipe(sortRatings[i][0]));
+			}
+			commit('setRecipes', sortedRecipes);
 			
-			commit('setRecipes', recipes);
-		})
+
+			
+		}else{
+			db.collection('recipes').orderBy(sortData.sortBy, sortData.sortType).get().then(query=>{
+				const recipes = [];
+				query.forEach(function(doc) {
+
+					const recipe = {};
+					for(let key in doc.data()){
+						recipe[key] = doc.data()[key];
+					}
+					recipe['id'] = doc.id;
+					recipes.push(recipe);
+
+				});
+
+				commit('setRecipes', recipes);
+			})
+		}
+		
 	}
 
 };

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import axios from '@/axios-files/axios-db'
 import {fb, db} from '@/main'
 import firebase from 'firebase'
+import router from '@/router';
 
 const state = {
 	users: []
@@ -10,6 +11,21 @@ const state = {
 const getters = {
 	getUsers(state){
 		return state.users;
+	},
+	getRecipeUser(state, getters){
+		const userID = getters.getCurrentRecipe.userID;
+		for(let i=0 ; i<state.users.length ; i++){
+			if(state.users[i].docId == userID){
+				return state.users[i];
+			}
+		}
+	},
+	getUserName:(state) => (userID)=>{
+		for(let i=0 ; i<state.users.length ; i++){
+			if(state.users[i].docId == userID){
+				return state.users[i].userName;
+			}
+		}
 	}
 }
 

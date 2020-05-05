@@ -1,17 +1,17 @@
 <template>
 	<v-container class="">
-		<v-chip class="mr-2 sort-chip" @click="sortRecipes('date', 'asc')" filter filter-icon="mdi-chevron-up" :input-value="true">Czas dodania</v-chip>
-		<v-chip class="mr-2 sort-chip" filter filter-icon="mdi-chevron-down" @click="sortRecipes('date', 'desc')" :input-value="true">Czas dodania</v-chip>
-		<v-chip class="mr-2 sort-chip" @click="sortRecipes('name', 'asc')" filter filter-icon="mdi-chevron-up" :input-value="true">Nazwa</v-chip>
-		<v-chip class="mr-2 sort-chip" @click="sortRecipes('name', 'desc')" filter filter-icon="mdi-chevron-down" :input-value="true">Nazwa</v-chip>
-		<v-chip class="mr-2 sort-chip" @click="sortRecipes('rating', 'asc')" filter filter-icon="mdi-chevron-up" :input-value="true">Ocena</v-chip>
-		<v-chip class="mr-2 sort-chip" filter filter-icon="mdi-chevron-down" @click="sortRecipes('rating', 'desc')" :input-value="true">Ocena</v-chip>
+		<v-chip class="mr-2 sort-chip mb-2" @click="sortRecipes('date', 'asc')" filter filter-icon="mdi-chevron-up" :input-value="true">Czas dodania</v-chip>
+		<v-chip class="mr-2 sort-chip mb-2" filter filter-icon="mdi-chevron-down" @click="sortRecipes('date', 'desc')" :input-value="true">Czas dodania</v-chip>
+		<v-chip class="mr-2 sort-chip mb-2" @click="sortRecipes('name', 'asc')" filter filter-icon="mdi-chevron-up" :input-value="true">Nazwa</v-chip>
+		<v-chip class="mr-2 sort-chip mb-2" @click="sortRecipes('name', 'desc')" filter filter-icon="mdi-chevron-down" :input-value="true">Nazwa</v-chip>
+		<v-chip class="mr-2 sort-chip mb-2" @click="sortRecipes('rating', 'asc')" filter filter-icon="mdi-chevron-up" :input-value="true">Ocena</v-chip>
+		<v-chip class="mr-2 sort-chip mb-2" filter filter-icon="mdi-chevron-down" @click="sortRecipes('rating', 'desc')" :input-value="true">Ocena</v-chip>
 		<v-row class="">
-			<v-col class="" cols="12" md="4" sm="6" v-for="(recipe,index) in recipes" :key="recipe.id">
+			<v-col class=""  cols="12" md="4" sm="6" v-for="(recipe,index) in recipes" :key="recipe.id">
 				<router-link class="" :to="`/recipe/${recipe.id}`" style="text-decoration: none;">
-					<v-card class="" >
+					<v-card class="h-100" >
 						<v-card-title class="justify-center">
-							<img class="" :src="recipe.photo" alt="" style="max-width: 95%">
+							<img class="" :src="recipe.photo" alt="" style=" height: 200px">
 						</v-card-title>
 						<v-card-text class="text-center">
 							<div class="">
@@ -20,7 +20,7 @@
 							</div>
 							<div class="">
 								<div class="caption grey--text">Użytkownik</div>
-								<div class="">{{recipe.userName}}</div>
+								<div class="">{{getUserName(recipe.userID)}}</div>
 							</div>
 							<div class="">
 								<div class="caption grey--text">Dodano</div>
@@ -49,7 +49,7 @@
 				const profileRecipes = [];
 				if(this.$route.path == '/myprofile'){
 					for(var i=0 ; i<recipes.length ; i++){
-						if(recipes[i].userName == localStorage.getItem('userName')){
+						if(recipes[i].userID == localStorage.getItem('docId')){
 							profileRecipes.push(recipes[i]);
 						}
 					}
@@ -61,6 +61,9 @@
 						return recipes;
 					}
 				}
+			},
+			users(){
+				return this.$store.getters.getUsers;
 			}
 		},
 		methods:{
@@ -76,6 +79,9 @@
 					sortBy: sortBy,
 					sortType: sortType
 				});
+			},
+			getUserName(userID){
+				return this.$store.getters.getUserName(userID);
 			}
 		}
 	}
