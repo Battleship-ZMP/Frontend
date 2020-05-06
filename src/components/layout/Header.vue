@@ -93,9 +93,6 @@
 		methods: {
 			logout(){
 				this.$store.dispatch('logout');
-				if(this.$route.path != '/'){
-					this.$router.push('/');
-				}
 			}
 		}
 	}

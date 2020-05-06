@@ -9,6 +9,28 @@
 						<v-text-field class="" color="teal" label="Stare hasło" v-model="userData.oldPassword" :type="show1 ? 'text' : 'password'" @click:append="show1 = !show1" :rules="[rules.minLength, rules.oldPassword]" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"></v-text-field>
 						<v-text-field class="" color="teal" label="Nowe hasło" v-model="userData.newPassword" :type="show1 ? 'text' : 'password'" @click:append="show1 = !show1" :rules="[rules.minLength]" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"></v-text-field>
 						<v-text-field class="" color="teal" label="Potwierdź Nowe hasło" v-model="userData.confirmNewPassword" :type="show1 ? 'text' : 'password'" @click:append="show1 = !show1" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.matchPassword]"></v-text-field>
+						
+						<v-dialog v-model="dialog" width="500">
+							<template v-slot:activator="{ on }">
+								<v-btn v-on="on" class="" color="error">
+									<p class="ma-0">Usuń konto</p>
+									<v-icon class="">mdi-close</v-icon>
+								</v-btn>
+							</template>
+							<v-card>
+								<v-card-title class="headline teal white--text" color="teal" teal primary-title>Podaj hasło</v-card-title>
+								<v-card-text class="pa-5">
+									<v-form ref="form">
+										<v-text-field class="" color="teal" label="Hasło" v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :type="show1 ? 'text' : 'password'" @click:append="show1 = !show1" :rules="[rules.required, rules.minLength]"></v-text-field>
+									</v-form>
+								</v-card-text>
+								<v-divider></v-divider>
+								<v-card-actions>
+									<v-btn color="teal" class="white--text" :loading="editLoading" @click="deleteAccount">Wyślij</v-btn>
+									<v-btn color="error" class="white--text" @click="dialog = false">Zamknij</v-btn>
+								</v-card-actions>
+							</v-card>
+						</v-dialog>
 					</v-col>
 					<v-col class="" md="4" cols="12">
 						<div class="text-center ">
@@ -30,7 +52,7 @@
 		<v-card-actions class="pa-4">
 			<v-btn color="teal" class="white--text" :loading="editLoading" @click="submit">Wyślij</v-btn>
 		</v-card-actions>
-		<v-snackbar v-model="snackbar" :timeout="4000" class="white--text" color="teal" right>
+		<v-snackbar v-model="snackbar" :timeout="4000" class="white--text" :color="snackbarColor" right>
 			{{ alertText  }}
 			<v-btn color="white" text @click="snackbar = false">
 				Zamknij
@@ -47,6 +69,9 @@
 			return{
 				show1: false,
 				snackbar: false,
+				snackbarColor: 'teal',
+				dialog: false,
+				password: '',
 				alertText: '',
 				photo: '',
 				rules:{
@@ -71,6 +96,9 @@
 			},
 			editLoading(){
 				return this.$store.getters.getEditLoading;
+			},
+			editErrors(){
+				return this.$store.getters.getEditErrors;
 			}
 		},
 		watch:{
@@ -79,7 +107,21 @@
 					this.snackbar = true;
 					this.alertText = 'Pomyślnie zedytowano profil!';
 				}
+			},
+			editErrors(){
+				if(this.editErrors.code == 'auth/wrong-password'){
+					this.snackbar = true;
+					this.alertText = 'Nieprawidłowe hasło!';
+					this.snackbarColor = 'error';
+				}else if(this.editErrors.code == 'success'){
+					this.snackbar = true;
+					this.alertText = 'Pomyślnie usunięto konto!';
+					setTimeout(()=>{
+						this.$store.dispatch('logout');
+					},4000);
+				}
 			}
+
 		},
 		methods:{
 			submit(){
@@ -113,11 +155,15 @@
 					this.url = URL.createObjectURL(event);
 					this.photo = event.name;
 					this.file = event;
-
 				}else{
 					this.url = null;
 				}
-
+			},
+			deleteAccount(){
+				if(confirm('Czy na pewno chcesz usunąć konto? Ta operacja uniemożliwi przywrócenie Twojego konta!')){
+					this.$store.commit('setEditLoading', true);
+					this.$store.dispatch('deleteAccount',this.password);
+				}
 			}
 		},
 		created(){
@@ -125,5 +171,5 @@
 			this.$store.dispatch('autoLogin');
 			
 		}
-}
+	}
 </script>

@@ -6,7 +6,8 @@ import router from '@/router';
 
 const state = {
 	users: [],
-	editLoading: false
+	editLoading: false,
+	errors: null
 };
 
 const getters = {
@@ -30,6 +31,9 @@ const getters = {
 	},
 	getEditLoading(state){
 		return state.editLoading;
+	},
+	getEditErrors(state){
+		return state.errors;
 	}
 }
 
@@ -39,6 +43,9 @@ const mutations = {
 	},
 	setEditLoading(state, loading){
 		state.editLoading = loading;
+	},
+	setEditErrors(state, errors){
+		state.errors = errors;
 	}
 };
 
@@ -99,6 +106,26 @@ const actions = {
 		}).catch(function(error) {
 		});
 
+	},
+	deleteAccount({commit}, password){
+		let user = firebase.auth().currentUser;
+		const credential = firebase.auth.EmailAuthProvider.credential(
+			user.email, 
+			password
+			);
+
+		user.reauthenticateWithCredential(credential).then(function() {
+			user.delete().then(res => {
+				console.log(res);
+				commit('setEditLoading', false);
+				commit('setEditErrors',{code: 'success'});
+			}, (error) => {
+				commit('setEditLoading', false);
+			});
+		}).catch(function(error) {
+			commit('setEditErrors', error);
+			commit('setEditLoading', false);
+		});
 	}
 };
 

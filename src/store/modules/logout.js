@@ -13,15 +13,16 @@ const actions = {
 			
 		}
 		auth.signOut();
+		if(router.history.current.path != '/'){
+			router.push('/');
+		}
 
 	},
 	autoLogout({dispatch}, expirationTime){
 		setTimeout(()=>{
 			dispatch('logout');
 		}, expirationTime * 1000);
-		if(router.history.current.path != '/'){
-			router.push('/');
-		}
+		
 
 	}
 }
