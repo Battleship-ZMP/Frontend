@@ -32,6 +32,7 @@
 						{{this.userName}}
 					</p>
 					<Login v-if="loginButton"/>
+					<AutoComplete />
 				</v-row>
 
 				<v-divider class="my-2"></v-divider>
@@ -53,6 +54,7 @@
 <script>
 	import Register from '@/components/auth/Register'
 	import Login from '@/components/auth/Login'
+	import AutoComplete from '@/components/layout/AutoComplete'
 
 	export default {
 		data () {
@@ -70,7 +72,7 @@
 			}
 		},
 		components:{
-			Register, Login
+			Register, Login, AutoComplete
 		},
 		computed:{
 			isLogged(){

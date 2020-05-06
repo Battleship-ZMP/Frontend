@@ -82,6 +82,11 @@
 
 					}
 				},
+				watch:{
+					'$route.params.id'(){
+						this.$store.dispatch('setCurrentRecipe',this.$route.params.id);
+					}
+				},
 				computed:{
 					recipe(){
 						return this.$store.getters.getCurrentRecipe;
