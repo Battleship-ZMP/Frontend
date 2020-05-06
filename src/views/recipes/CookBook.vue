@@ -15,6 +15,7 @@
 
 		<v-card flat tile>
 			<v-card-text>
+				<AutoComplete :color="'teal'" :list="myRecipes"/>
 				<Home :givenRecipes="myRecipes" />
 			</v-card-text>
 		</v-card>
@@ -23,6 +24,7 @@
 
 		<v-card flat tile>
 			<v-card-text>
+				<AutoComplete :list="savedRecipes"/>
 				<Home :givenRecipes="savedRecipes"/>
 			</v-card-text>
 		</v-card>
@@ -33,6 +35,7 @@
 
 <script>
 	import Home from '@/views/Home'
+	import AutoComplete from '@/components/layout/AutoComplete'
 
 	export default{
 		data(){
@@ -44,7 +47,7 @@
 			}
 		},
 		components:{
-			Home
+			Home, AutoComplete
 		},
 		computed:{
 			myRecipes(){

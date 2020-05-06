@@ -1,5 +1,5 @@
 <template>
-	<v-autocomplete v-model="model" :items="items" :search-input.sync="search" clearable hide-details  item-text="name" label="Wyszukaj przepis..." class="pa-4" color="white">
+	<v-autocomplete v-model="model" :items="items" :search-input.sync="search" clearable hide-details  item-text="name" label="Wyszukaj przepis..." class="pa-4" :color="color">
 		<template v-slot:no-data>
 			<v-list-item>
 				<v-list-item-title>
@@ -9,11 +9,6 @@
 				</v-list-item-title>
 			</v-list-item>
 		</template>
-		<!-- <template v-slot:selection="{ attr, on, item, selected }">
-			<v-chip v-bind="attr" :input-value="selected" color="blue-grey" class="white--text" v-on="on">
-				<span v-text="item.name"></span>
-			</v-chip>
-		</template> -->
 		<template v-slot:item="{ item }">
 			<div @click="goTo(item.id)" tag="router-link" :to="'/recipe/'+item.id" class="d-flex completeListItem" style="width:100%">
 				<v-list-item-avatar color="indigo" class="headline font-weight-light white--text">
@@ -29,6 +24,7 @@
 
 <script>
 	export default {
+		props: ['list', 'color'],
 		data(){
 			return{
 				model: null,
@@ -37,13 +33,17 @@
 			}
 			
 		},
-
 		watch: {
 			search (val) {
 				if (this.items.length > 0) {
 					return;
 				}
-				this.items = this.recipes;
+				if(this.list == 'undefined'){
+
+					this.items = this.recipes;
+				}else{
+					this.items = this.list;
+				}
 			},
 		},
 		computed:{
