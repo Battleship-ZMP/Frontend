@@ -14,7 +14,8 @@ const state = {
 		photo: '',
 		savedByUsers: [],
 	},
-	recipeFormLoading: false
+	recipeFormLoading: false,
+	deleteLoading: false
 	
 };
 
@@ -60,6 +61,9 @@ const getters = {
 	},
 	getRecipeFormLoading(state){
 		return state.recipeFormLoading;
+	},
+	getDeleteLoading(state){
+		return state.deleteLoading;
 	}
 };
 
@@ -83,6 +87,9 @@ const mutations = {
 	},
 	setRecipeFormLoading(state, loading){
 		state.recipeFormLoading = loading;
+	},
+	setDeleteLoading(state, loading){
+		state.deleteLoading = loading;
 	}
 };
 
@@ -109,6 +116,12 @@ const actions = {
 	},
 	setCurrentRecipe({commit, dispatch}, id){
 		commit('setCurrentRecipe', id);
+	},
+	deleteRecipe({commit},id){
+		db.collection('recipes').doc(id).delete().then(res=>{
+			commit('setDeleteLoading', false);
+			console.log(res);
+		});
 	},
 	addRecipe({dispatch, commit},recipeData){
 		if(recipeData.file != null){

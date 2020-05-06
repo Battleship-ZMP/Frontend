@@ -9,9 +9,13 @@
 							<v-icon class="" left>mdi-plus</v-icon>
 							<p class="ma-0">Zapisz</p>
 						</v-btn>
-						<v-btn v-if="user.docId == recipe.userID" @click="editRecipe" depressed color="teal" class="white--text d-flex align-center">
+						<v-btn v-if="user.docId == recipe.userID" @click="editRecipe" depressed color="teal" class="white--text d-flex align- mr-2">
 							<v-icon class="" left>mdi-pencil</v-icon>
 							<p class="ma-0">Edytuj</p>
+						</v-btn>
+						<v-btn v-if="user.docId == recipe.userID" @click="deleteRecipe" depressed color="error" :loading="deleteLoading" class="white--text d-flex align-center">
+							<v-icon class="" left>mdi-trash-can</v-icon>
+							<p class="ma-0">Usuń</p>
 						</v-btn>
 						<v-btn v-if="this.recipe.savedByUsers.includes(user.docId) ? true : false" depressed color="grey" class="white--text d-flex align-center" @click="unSaveRecipe">
 							<v-icon class="" left>mdi-check</v-icon>
@@ -61,6 +65,12 @@
 					<h2 class="title">Przepis:</h2>
 					<p>{{recipe.instructions}}</p>
 				</v-row>
+				<v-snackbar v-model="snackbar" :timeout="4000" class="white--text" color="teal" right>
+					{{ alertText  }}
+					<v-btn color="white" text @click="snackbar = false">
+						Zamknij
+					</v-btn>
+				</v-snackbar>
 			</v-container>
 		</template>
 
@@ -68,6 +78,8 @@
 			export default{
 				data(){
 					return{
+						snackbar: false,
+						alertText: '',
 						saved: false,
 						currentUserID: localStorage.getItem('docId'),
 						dialog: false,
@@ -103,6 +115,9 @@
 					},
 					recipeUserName(){
 						return this.$store.getters.getRecipeUserName;
+					},
+					deleteLoading(){
+						return this.$store.getters.getDeleteLoading;
 					}
 					
 				},
@@ -111,6 +126,16 @@
 
 				},
 				methods:{
+					deleteRecipe(){
+						this.$store.commit('setDeleteLoading', true);
+						this.$store.dispatch('deleteRecipe',this.recipe.id);
+						this.snackbar = true;
+						this.alertText = 'Pomyślnie usunięto przepis!';
+						setTimeout(()=>{
+							this.$router.push('/');
+							this.$store.dispatch('loadRecipes');
+						},4000);
+					},
 					saveRecipe(){
 						if(!localStorage.getItem('token')){
 							alert('Musisz się zalogować!');

@@ -36,7 +36,7 @@
 		<v-snackbar v-model="snackbar" :timeout="4000" class="white--text" color="error" right>
 			{{ alertText  }}
 			<v-btn color="white" text @click="snackbar = false">
-				Close
+				Zamknij
 			</v-btn>
 		</v-snackbar>
 	</v-dialog>

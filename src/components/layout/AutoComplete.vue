@@ -15,7 +15,7 @@
 			</v-chip>
 		</template> -->
 		<template v-slot:item="{ item }">
-			<div @click="goTo(item.id)" tag="router-link" :to="'/recipe/'+item.id" class="d-flex" style="width:100%">
+			<div @click="goTo(item.id)" tag="router-link" :to="'/recipe/'+item.id" class="d-flex completeListItem" style="width:100%">
 				<v-list-item-avatar color="indigo" class="headline font-weight-light white--text">
 					<img :src="item.photo" alt="">
 				</v-list-item-avatar>
@@ -62,3 +62,9 @@
 		}
 	}
 </script>
+
+<style>
+	.completeListItem{
+		border-bottom: 1px solid #009688;
+	}
+</style>
