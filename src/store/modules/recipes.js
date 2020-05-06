@@ -118,9 +118,8 @@ const actions = {
 		commit('setCurrentRecipe', id);
 	},
 	deleteRecipe({commit},id){
-		db.collection('recipes').doc(id).delete().then(res=>{
+		db.collection('recipes').doc(id).delete().then(()=>{
 			commit('setDeleteLoading', false);
-			console.log(res);
 		});
 	},
 	addRecipe({dispatch, commit},recipeData){
