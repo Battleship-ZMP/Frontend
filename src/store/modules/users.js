@@ -5,7 +5,8 @@ import firebase from 'firebase'
 import router from '@/router';
 
 const state = {
-	users: []
+	users: [],
+	editLoading: false
 };
 
 const getters = {
@@ -26,12 +27,18 @@ const getters = {
 				return state.users[i].userName;
 			}
 		}
+	},
+	getEditLoading(state){
+		return state.editLoading;
 	}
 }
 
 const mutations = {
 	setUsers(state, users){
 		state.users = users;
+	},
+	setEditLoading(state, loading){
+		state.editLoading = loading;
 	}
 };
 
@@ -74,6 +81,24 @@ const actions = {
 		delete userData.file;
 		commit('setUserData', userData);
 		db.collection('users').doc(docId).update(userData);
+	},
+	changeUserPassword({commit}, passwordData){
+		let user = firebase.auth().currentUser;
+		const credential = firebase.auth.EmailAuthProvider.credential(
+			user.email, 
+			passwordData.oldPassword
+			);
+
+		user.reauthenticateWithCredential(credential).then(function() {
+			user.updatePassword(passwordData.newPassword).then(res => {
+				console.log(res);
+				commit('setEditLoading', false);
+			}, (error) => {
+				console.log(error);
+			});
+		}).catch(function(error) {
+		});
+
 	}
 };
 

@@ -5,7 +5,8 @@
 				<img class="" :src="currentUser.photo" alt="">
 			</v-avatar>
 			<h2>{{currentUser.userName}}</h2>
-			<p>{{currentUser.bio}}</p>
+			<p>{{currentUser.email}}</p>
+			<p v-if="currentUser.bio">{{currentUser.bio}}</p>
 			<router-link class="" to="/editmyprofile" style="text-decoration: none;">
 				<v-btn color="teal" class="white--text">Edytuj Profil</v-btn>
 			</router-link>

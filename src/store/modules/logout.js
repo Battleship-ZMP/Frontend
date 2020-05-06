@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import {auth} from '@/main'
+import router from '@/router'
 
 const actions = {
 	logout({commit, getters}){
@@ -18,6 +19,10 @@ const actions = {
 		setTimeout(()=>{
 			dispatch('logout');
 		}, expirationTime * 1000);
+		if(router.history.current.path != '/'){
+			router.push('/');
+		}
+
 	}
 }
 

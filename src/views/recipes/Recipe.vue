@@ -29,7 +29,7 @@
 						<v-icon class="" color="yellow darken-1" :size="20" v-for="(recipe,index) in 5-rating" :key="recipe.rating">mdi-star-outline</v-icon>
 						<v-dialog v-model="dialog" persistent max-width="400">
 							<template v-slot:activator="{ on }">
-								<v-btn @click="selectedStar = null" v-on="on" color="teal" depressed class="ml-2 d-flex white--text align-center">
+								<v-btn v-if="user.docId" @click="selectedStar = null" v-on="on" color="teal" depressed class="ml-2 d-flex white--text align-center">
 									<v-icon class="" left>mdi-star</v-icon>
 									<p class="ma-0">Oceń</p>
 								</v-btn>
@@ -123,7 +123,7 @@
 				},
 				created(){
 					this.$store.dispatch('loadRecipes');
-
+					this.$store.commit('setCurrentRecipe', this.$route.params.id);
 				},
 				methods:{
 					deleteRecipe(){

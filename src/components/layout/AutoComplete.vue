@@ -38,7 +38,7 @@
 				if (this.items.length > 0) {
 					return;
 				}
-				if(this.list == 'undefined'){
+				if(this.list == null){
 
 					this.items = this.recipes;
 				}else{
