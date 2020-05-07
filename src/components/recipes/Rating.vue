@@ -21,12 +21,15 @@
 </template>
 
 <script>
+	import * as RatingHelper from '@/helpers/RatingHelper';
+
 	export default{
 		props:['user', 'recipe'],
 		data(){
 			return{
 				selectedStar: null,
 				dialog: false,
+				isSelected: false,
 				starType: [
 				{name: 'mdi-star-outline', size: 50}, 
 				{name: 'mdi-star-outline', size: 50},
@@ -49,39 +52,28 @@
 					this.starType[i].name = 'mdi-star';
 				}
 			},
+			setStarsAttributes(index){
+				const starsAttributes = RatingHelper.setStarsAttributes(this.starType, index, this.isSelected, this.selectedStar);
+				this.selectedStar = starsAttributes.selectedStar;
+				this.starType = starsAttributes.starType;
+			},
 			selectStar(index){
-				var isSelected = false;
-				if(this.selectedStar == null){
-					this.selectedStar = index+1;
-				}else if(this.selectedStar != index+1 ){
-					this.selectedStar = index+1;
-				}else{
-					if(this.selectedStar == index+1){
-						isSelected = true;
-					}
+				const data = {
+					isSelected: this.isSelected,
+					selectedStar: this.selectedStar,
+					index: index
+				};
+				const selectStarResult = RatingHelper.selectStar(data);
+				this.selectedStar = selectStarResult.selectedStar;
+				this.isSelected = selectStarResult.isSelected;
+				this.setStarsAttributes(index);
+
+			},
+			setStarsAttributesToNormal(){
+				for(let i =0 ;i< 5 ;i++){
+					this.starType[i].name = 'mdi-star-outline';
+					this.starType[i].size = 50;
 				}
-				for(let i=0 ; i<5 ;i++){
-					if(i == index){
-						this.starType[i].size = 80;
-						this.starType[i].name = 'mdi-star';
-
-					}else{
-						this.starType[i].size = 50;
-						this.starType[i].name = 'mdi-star-outline';
-					}
-					if(i <= index){
-						this.starType[i].name = 'mdi-star';
-					}else{
-						this.starType[i].name = 'mdi-star-outline';
-					}
-					if(isSelected){
-						this.starType[i].name = 'mdi-star-outline';
-						this.starType[i].size = 50;
-						this.selectedStar = null;
-					}
-
-				}
-
 			},
 			rateRecipe(){
 				if(this.selectedStar == null){
@@ -92,18 +84,12 @@
 				}
 				this.recipe.rating.push(this.selectedStar);
 				this.$store.dispatch('updateRecipe', this.recipe);
-				for(let i =0 ;i< 5 ;i++){
-					this.starType[i].name = 'mdi-star-outline';
-					this.starType[i].size = 50;
-				}
+				this.setStarsAttributesToNormal();
 				this.dialog = false;
 			},
 			closeDialog(){
+				this.setStarsAttributesToNormal();
 				this.dialog = false;
-				for(let i =0 ;i< 5 ;i++){
-					this.starType[i].name = 'mdi-star-outline';
-					this.starType[i].size = 50;
-				}
 			},
 		}
 	}
