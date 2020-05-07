@@ -2,30 +2,14 @@
 	<v-tabs
 	:centered="true" color="teal" :grow="true"   class="ma-4">
 	<v-tabs-slider></v-tabs-slider>
-
-	<v-tab href="#tab-0">
-		{{tabs[0]}}
+	<v-tab v-for="(tab, index) in tabs" :key="index" :href="`#tab-${index}`">
+		{{tab.name}}
 	</v-tab>
-
-	<v-tab href="#tab-1">
-		{{tabs[1]}}
-	</v-tab>
-
-	<v-tab-item value="tab-0" >
-
+	<v-tab-item v-for="(tab, index) in tabs" :key="index" :value="`tab-${index}`" >
 		<v-card flat tile>
 			<v-card-text>
-				<AutoComplete :color="'teal'" :list="myRecipes"/>
-				<Home :givenRecipes="myRecipes" />
-			</v-card-text>
-		</v-card>
-	</v-tab-item>
-	<v-tab-item value="tab-1" >
-
-		<v-card flat tile>
-			<v-card-text>
-				<AutoComplete :list="savedRecipes"/>
-				<Home :givenRecipes="savedRecipes"/>
+				<AutoComplete :color="tab.color" :list="tab.recipes"/>
+				<Home :givenRecipes="tab.recipes" />
 			</v-card-text>
 		</v-card>
 	</v-tab-item>
@@ -38,14 +22,6 @@
 	import AutoComplete from '@/components/layout/AutoComplete'
 
 	export default{
-		data(){
-			return{
-				tabs: [
-				'Moje przepisy' ,
-				'Zapisane przepisy'
-				],
-			}
-		},
 		components:{
 			Home, AutoComplete
 		},
@@ -55,6 +31,10 @@
 			},
 			savedRecipes(){
 				return this.$store.getters.getSavedRecipes;
+			},
+			tabs(){
+				return [{name: 'Moje przepisy', recipes: this.myRecipes, color: 'teal'},
+				{name: 'Zapisane przepisy', recipes: this.savedRecipes, color: ''}];
 			}
 		}
 	}
