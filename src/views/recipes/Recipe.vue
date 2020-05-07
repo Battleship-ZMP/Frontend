@@ -46,7 +46,7 @@
 					<h2 class="title">Przepis:</h2>
 					<p>{{recipe.instructions}}</p>
 				</v-row>
-				<Snackbar :snackbar="snackbar" :alertText="alertText" @closeSnackbar="closeSnackbar" :snackbarColor="snackbarColor" />
+				<Snackbar :snackbar="snackbar" :alertText="alertText" :snackbarColor="snackbarColor" />
 			</v-container>
 		</template>
 
@@ -146,6 +146,12 @@
 					editRecipe(){
 						this.$router.push('/recipeform/'+this.recipe.id);
 					},
+				},
+				beforeRouteLeave(to,from,next){
+					if(to.path == '/recipeform'){
+						this.$store.commit('destroyCurrentRecipe');
+					}
+					next();
 				}
 			}
 		</script>

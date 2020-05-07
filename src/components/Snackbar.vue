@@ -1,7 +1,7 @@
 <template>
 	<v-snackbar v-model="snackbar" :timeout="4000" class="white--text" :color="snackbarColor" right>
 		{{ alertText  }}
-		<v-btn color="white" text @click="closeSnackbar">
+		<v-btn color="white" text @click="snackbar = false">
 			Zamknij
 		</v-btn>
 	</v-snackbar>
@@ -9,11 +9,7 @@
 
 <script>
 	export default{
-		props:['alertText','snackbarColor', 'snackbar'],
-		methods:{
-			closeSnackbar(){
-				this.$emit('closeSnackbar', false);
-			}
-		}
+		props:['alertText','snackbarColor', 'snackbar']
+		
 	}
 </script>

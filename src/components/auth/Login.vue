@@ -2,7 +2,7 @@
 	<v-dialog v-model="dialog" width="500">
 		<template v-slot:activator="{ on }">
 			<v-btn style="font-size: 0.7rem" class="white--text" text v-on="on">
-				<span>Zaloguj się</span>
+				<v-icon class="">mdi-login</v-icon>
 			</v-btn>
 		</template>
 		<v-card>
@@ -33,17 +33,13 @@
 				<v-btn color="error" class="white--text" @click="dialog = false">Zamknij</v-btn>
 			</v-card-actions>
 		</v-card>
-		<v-snackbar v-model="snackbar" :timeout="4000" class="white--text" color="error" right>
-			{{ alertText  }}
-			<v-btn color="white" text @click="snackbar = false">
-				Zamknij
-			</v-btn>
-		</v-snackbar>
+		<Snackbar :snackbar="snackbar" :alertText="alertText" :snackbarColor="snackbarColor" />
 	</v-dialog>
 </template>
 
 <script>
 	import Register from './Register.vue'
+	import Snackbar from '@/components/Snackbar';
 
 	export default{
 		data(){
@@ -52,6 +48,7 @@
 				snackbar: false,
 				email: '',
 				password: '',
+				snackbarColor: 'error',
 				loading: false,
 				rules: {
 					required: value => !!value || 'To pole jest wymagane!',
@@ -82,12 +79,17 @@
 			},
 			signInWithFacebook(){
 				this.$store.dispatch('signInWithFacebook');
+			},
+			setSnackbarData(message){
+				this.alertText = message;
+				this.snackbar = true;
+				this.loading = false;
 			}
 
 			
 		},
 		components:{
-			Register
+			Register, Snackbar
 		},
 		computed:{
 			loginErrors(){
@@ -101,20 +103,14 @@
 		watch:{
 			loginErrors(){
 				if(this.loginErrors.code == 'auth/user-not-found'){
-					this.alertText = 'Nie znaleziono użytkownika, spróbuj ponownie';
-					this.snackbar = true;
-					this.loading = false;
+					this.setSnackbarData('Nie znaleziono użytkownika, spróbuj ponownie');
 				}else if(this.loginErrors.code == 'auth/wrong-password'){
-					this.alertText = 'Nieprawidłowe hasło!';
-					this.snackbar = true;
-					this.loading = false;
+					this.setSnackbarData('Nieprawidłowe hasło!');
 				}
 			},
 			facebookLoginErrors(){
 				if(this.facebookLoginErrors.code == 'auth/account-exists-with-different-credential'){
-					this.alertText = 'Ten email jest juz zarejestrowany. Spróbuj zalogować się przez google lub zresetuj hasło';
-					this.snackbar = true;
-					this.loading = false;
+					this.setSnackbarData('Ten email jest juz zarejestrowany. Spróbuj zalogować się przez google lub zresetuj hasło');
 				}
 			}
 

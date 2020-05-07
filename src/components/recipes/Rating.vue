@@ -9,9 +9,7 @@
 		<v-card class="">
 			<v-card-title class="headline teal white--text" color="teal" teal primary-title>Oceń przepis!</v-card-title>
 			<v-card-text class="pa-5 justify-center d-flex">
-
 				<v-icon class="recipe-star" color="yellow darken-1" :size="star.size" v-for="(star, index) in starType" @mouseleave="resetStars" @mouseenter="fillStars(index)" @click="selectStar(index)"  :key="index">{{star.name}}</v-icon>
-
 			</v-card-text>
 			<v-divider></v-divider>
 			<v-card-actions>

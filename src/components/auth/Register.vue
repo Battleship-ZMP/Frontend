@@ -2,7 +2,7 @@
 	<v-dialog v-model="dialog" width="500">
 		<template v-slot:activator="{ on }">
 			<v-btn style="font-size: 0.7rem" class="white--text text--lighten-2" text v-on="on">
-				<span>Zarejestruj się</span>
+				<v-icon color="white" v-on="on">mdi-account-plus</v-icon>
 			</v-btn>
 		</template>
 		<v-card>
@@ -21,17 +21,12 @@
 				<v-btn color="error" class="white--text" @click="dialog = false">Zamknij</v-btn>
 			</v-card-actions>
 		</v-card>
-		<v-snackbar v-model="snackbar" :timeout="4000" class="white--text" color="error" :top="true">
-			{{ alertText  }}
-			<v-btn color="white" text @click="snackbar = false">
-				Zamknij
-			</v-btn>
-		</v-snackbar>
+		<Snackbar :snackbar="snackbar" :alertText="alertText" :snackbarColor="snackbarColor" />
 	</v-dialog>
 </template>
 
 <script>
-	
+	import Snackbar from '@/components/Snackbar'
 
 	export default{
 		data(){
@@ -39,6 +34,7 @@
 				email: '',
 				alertText: '',
 				snackbar: false,
+				snackbarColor: 'error',
 				password: '',
 				loading: false,
 				passwordConfirm: '',
@@ -67,9 +63,13 @@
 						userName: this.userName
 					};
 					this.loading = true;
-
 					this.$store.dispatch('signUp', authData);
 				}
+			},
+			setSnackbarData(message){
+				this.alertText = message;
+				this.snackbar = true;
+				this.loading = false;
 			}
 		},
 		computed:{
@@ -86,11 +86,12 @@
 		watch:{
 			signUpErrors(){
 				if(this.signUpErrors.code == 'auth/email-already-in-use'){
-					this.alertText = 'Ten email jest już zarejestrowany';
-					this.snackbar = true;
-					this.loading = false;
+					this.setSnackbarData('Ten email jest już zarejestrowany');
 				}
 			}
+		},
+		components:{
+			Snackbar
 		}
 	}
 </script>

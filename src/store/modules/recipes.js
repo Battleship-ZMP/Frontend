@@ -87,6 +87,7 @@ const mutations = {
 	},
 	setRecipeFormLoading(state, loading){
 		state.recipeFormLoading = loading;
+		console.log('ustawianko');
 	},
 	setDeleteLoading(state, loading){
 		state.deleteLoading = loading;
@@ -142,6 +143,8 @@ const actions = {
 			recipeData.photo = 'https://via.placeholder.com/150';
 			db.collection('recipes').add(recipeData);
 			dispatch('loadRecipes');
+			console.log('bez zdjecia');
+			// setTimeout(()=>{commit('setRecipeFormLoading', false);},1000);
 			commit('setRecipeFormLoading', false);
 		}
 		
@@ -159,7 +162,7 @@ const actions = {
 				uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
 					delete recipeData.file;
 					recipeData.photo = downloadURL;
-					db.collection('recipes').doc(recipe.id).update(recipeData);
+					db.collection('recipes').doc(recipeData.id).update(recipeData);
 					commit('setRecipeFormLoading', false);
 				});
 			});
