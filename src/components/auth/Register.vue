@@ -1,9 +1,14 @@
 <template>
 	<v-dialog v-model="dialog" width="500">
-		<template v-slot:activator="{ on }">
-			<v-btn style="font-size: 0.7rem" class="white--text text--lighten-2" text v-on="on">
-				<v-icon color="white" v-on="on">mdi-account-plus</v-icon>
-			</v-btn>
+		<template v-slot:activator="{ on:dialog }">
+			<v-tooltip class="" bottom>
+				<template v-slot:activator="{ on:tooltip }">
+					<v-btn style="font-size: 0.7rem" class="white--text text--lighten-2" text >
+						<v-icon color="white" v-on="{...dialog, ...tooltip}">mdi-account-plus</v-icon>
+					</v-btn>
+				</template>
+				<span>Zarejestruj się!</span>
+			</v-tooltip>
 		</template>
 		<v-card>
 			<v-card-title class="headline teal white--text" color="teal" teal primary-title>Dołącz do nas!</v-card-title>

@@ -44,25 +44,18 @@
 						<v-file-input class="" color="teal" label="Awatar" @change="avatar" counter show-size prepend-icon="mdi-camera" :rules="[rules.isPhoto]"></v-file-input>
 					</v-col>
 				</v-row>
-				
-				
 			</v-form>
 		</v-card-text>
 		<v-divider></v-divider>
 		<v-card-actions class="pa-4">
 			<v-btn color="teal" class="white--text" :loading="editLoading" @click="submit">Wyślij</v-btn>
 		</v-card-actions>
-		<v-snackbar v-model="snackbar" :timeout="4000" class="white--text" :color="snackbarColor" right>
-			{{ alertText  }}
-			<v-btn color="white" text @click="snackbar = false">
-				Zamknij
-			</v-btn>
-		</v-snackbar>
+		<Snackbar :snackbar="snackbar" :alertText="alertText" :snackbarColor="snackbarColor" />
 	</v-card>
 </template>
 
 <script>
-	
+	import Snackbar from '@/components/Snackbar'
 
 	export default{
 		data(){
@@ -167,9 +160,10 @@
 			}
 		},
 		created(){
-
 			this.$store.dispatch('autoLogin');
-			
+		},
+		components:{
+			Snackbar
 		}
 	}
 </script>
