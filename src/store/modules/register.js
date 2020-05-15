@@ -35,6 +35,7 @@ const actions = {
 			localStorage.setItem('expirationDate', expirationDate);
 			commit('setUserData', userData);
 			delete authData.password;
+			authData.photo = 'https://firebasestorage.googleapis.com/v0/b/coolrecipes-f4e21.appspot.com/o/placeholders%2Favatar_placeholder.png?alt=media&token=a53a239f-ed1e-4de8-ba7c-80c29f82f52f';
 			dispatch('saveNewUser', authData);
 			dispatch('autoLogout', timeToLogout);
 		}).catch(err=>{

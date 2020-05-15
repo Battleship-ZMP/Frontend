@@ -140,7 +140,7 @@ const actions = {
 			});
 		}else{
 			delete recipeData.file;
-			recipeData.photo = 'https://via.placeholder.com/150';
+			recipeData.photo = 'https://firebasestorage.googleapis.com/v0/b/coolrecipes-f4e21.appspot.com/o/placeholders%2Frecipe_placeholder.png?alt=media&token=a23e9154-81c1-4d70-83a1-af110b2649c9';
 			db.collection('recipes').add(recipeData);
 			dispatch('loadRecipes');
 			console.log('bez zdjecia');
