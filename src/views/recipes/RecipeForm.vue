@@ -35,6 +35,7 @@
 
 <script>
 	import {fb, db} from '@/main'
+	import Snackbar from '@/components/Snackbar'
 
 	export default{
 		data(){
@@ -52,8 +53,6 @@
 		methods:{
 			submit(){
 				if(this.$refs.form.validate()){
-
-
 					if(this.$route.params.id != null){
 						const recipeData = {
 							description: this.recipe.description,
@@ -83,7 +82,6 @@
 							savedByUsers: [],
 						};
 						this.$store.commit('setRecipeFormLoading', true);
-						console.log(recipeData);
 						if(this.file == null){
 							setTimeout(()=>{this.$store.dispatch('addRecipe', recipeData);},1000);
 						}else{
@@ -133,12 +131,13 @@
 			}
 		},
 		beforeRouteEnter(to,from,next){
-			console.log(to);
 			if(to.path == '/recipeform'){
 				to.matched[0].components.default.computed.recipe = null;
-				// this.file = null;
 			}
 			next();
+		},
+		components:{
+			Snackbar
 		}
 
 	}

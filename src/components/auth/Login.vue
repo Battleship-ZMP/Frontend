@@ -1,9 +1,14 @@
 <template>
 	<v-dialog v-model="dialog" width="500">
-		<template v-slot:activator="{ on }">
-			<v-btn style="font-size: 0.7rem" class="white--text" text v-on="on">
-				<v-icon class="">mdi-login</v-icon>
-			</v-btn>
+		<template v-slot:activator="{ on:dialog }">
+			<v-tooltip class="" bottom>
+				<template v-slot:activator="{ on:tooltip }">
+					<v-btn style="font-size: 0.7rem" class="white--text" text v-on="{...dialog, ...tooltip}">
+						<v-icon class="">mdi-login</v-icon>
+					</v-btn>
+				</template>
+				<span>Zaloguj się!</span>
+			</v-tooltip>
 		</template>
 		<v-card>
 			<v-card-title class="headline teal white--text" color="teal" teal primary-title>Zaloguj się!</v-card-title>

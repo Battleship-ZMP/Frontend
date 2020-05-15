@@ -1,11 +1,12 @@
 <template>
 	<v-container class="">
-		<v-chip class="mr-2 sort-chip mb-2" @click="sortRecipes('date', 'asc')" filter filter-icon="mdi-chevron-up" :input-value="true">Czas dodania</v-chip>
+		<v-chip v-for="sortChip in sortChips" class="mr-2 sort-chip mb-2" @click="sortRecipes('date', 'asc')" filter filter-icon="mdi-chevron-up" :input-value="true">Czas dodania</v-chip>
+		<!-- <v-chip class="mr-2 sort-chip mb-2" @click="sortRecipes('date', 'asc')" filter filter-icon="mdi-chevron-up" :input-value="true">Czas dodania</v-chip>
 		<v-chip class="mr-2 sort-chip mb-2" filter filter-icon="mdi-chevron-down" @click="sortRecipes('date', 'desc')" :input-value="true">Czas dodania</v-chip>
 		<v-chip class="mr-2 sort-chip mb-2" @click="sortRecipes('name', 'asc')" filter filter-icon="mdi-chevron-up" :input-value="true">Nazwa</v-chip>
 		<v-chip class="mr-2 sort-chip mb-2" @click="sortRecipes('name', 'desc')" filter filter-icon="mdi-chevron-down" :input-value="true">Nazwa</v-chip>
 		<v-chip class="mr-2 sort-chip mb-2" @click="sortRecipes('rating', 'asc')" filter filter-icon="mdi-chevron-up" :input-value="true">Ocena</v-chip>
-		<v-chip class="mr-2 sort-chip mb-2" filter filter-icon="mdi-chevron-down" @click="sortRecipes('rating', 'desc')" :input-value="true">Ocena</v-chip>
+		<v-chip class="mr-2 sort-chip mb-2" filter filter-icon="mdi-chevron-down" @click="sortRecipes('rating', 'desc')" :input-value="true">Ocena</v-chip> -->
 		<v-row class="">
 			<v-col class=""  cols="12" md="4" sm="6" v-for="(recipe,index) in recipes" :key="recipe.id">
 				<router-link class="" :to="`/recipe/${recipe.id}`" style="text-decoration: none;">
@@ -42,6 +43,18 @@
 
 <script>
 	export default{
+		data(){
+			return{
+				sortChips:[
+				{sortBy: 'date',type:'asc'name', 'rating']},
+				{sortType:[
+					{, icon: 'mdi-chevron-up'},
+					{type: 'down', icon: 'mdi-chevron-down'},
+					]
+				}
+				]
+			}
+		},
 		props: ['givenRecipes'],
 		computed:{
 			recipes(){
