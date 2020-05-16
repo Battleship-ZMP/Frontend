@@ -60,7 +60,6 @@
 							instructions: this.recipe.instructions,
 							name: this.recipe.name,
 							rating: this.recipe.rating,
-							date: this.getDate(),
 							userID: this.$store.getters.getUserData.docId,
 							file: this.file,
 							savedByUsers: this.recipe.savedByUsers,
@@ -76,7 +75,6 @@
 							instructions: this.recipe.instructions,
 							name: this.recipe.name,
 							rating: [],
-							date: this.getDate(),
 							userID: this.$store.getters.getUserData.docId,
 							file: this.file,
 							savedByUsers: [],
@@ -89,16 +87,6 @@
 						}
 					}
 				}
-			},
-			getDate(){
-				// var curdate = new Date(null);
-				// curdate.setTime(Date.now());
-				// console.log(curdate.toLocaleString());
-				var formatter = new Intl.DateTimeFormat('pl');
-				const now = new Date();
-				var date = formatter.format(now);
-				date = date+ ' ' + now.getHours() + ':' + now.getMinutes();
-				return date;
 			},
 			avatar(event){
 				if(event){
@@ -133,15 +121,9 @@
 				}
 			}
 		},
-		beforeRouteEnter(to,from,next){
-			if(to.path == '/recipeform'){
-				to.matched[0].components.default.computed.recipe = null;
-			}
-			next();
-		},
 		components:{
 			Snackbar
-		}
+		},
 
 	}
 </script>

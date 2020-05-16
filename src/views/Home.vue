@@ -19,7 +19,7 @@
 							</div>
 							<div class="">
 								<div class="caption grey--text">Dodano</div>
-								<div class="">{{recipe.date}}</div>
+								<div class="">{{recipe.date.toDate().toLocaleString()}}</div>
 							</div>
 							<div class="">
 								<div class="caption grey--text">Ocena</div>

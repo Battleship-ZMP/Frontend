@@ -10,11 +10,21 @@
 		<Register v-if="!isLogged" />
 		<router-link to="/recipeform" style="text-decoration: none">
 			<v-btn style="font-size: 0.7rem" v-if="isLogged" text class="white--text font-weight-normal px-0">
-				<v-icon >mdi-plus</v-icon>
+				<v-tooltip bottom>
+					<template v-slot:activator="{ on }">
+						<v-icon v-on="on" >mdi-plus</v-icon>
+					</template>
+					<span>Dodaj przepis!</span>
+				</v-tooltip>
 			</v-btn>
 		</router-link>
 		<v-btn style="font-size: 0.7rem" v-if="isLogged" @click="logout" text class="white--text font-weight-normal px-0">
-			<v-icon >mdi-exit-to-app</v-icon>
+			<v-tooltip bottom>
+					<template v-slot:activator="{ on }">
+						<v-icon v-on="on" >mdi-exit-to-app</v-icon>
+					</template>
+					<span>Wyloguj się!</span>
+				</v-tooltip>
 		</v-btn>
 	</v-app-bar>
 </template>

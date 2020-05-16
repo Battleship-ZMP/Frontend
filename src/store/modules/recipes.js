@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import {fb, db} from '@/main'
 import router from '@/router';
+import firebase from 'firebase';
 
 const state = {
 	recipes: [],
@@ -133,6 +134,7 @@ const actions = {
 				uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
 					delete recipeData.file;
 					recipeData.photo = downloadURL;
+					recipeData.date = firebase.firestore.FieldValue.serverTimestamp();
 					db.collection('recipes').add(recipeData);
 					dispatch('loadRecipes');
 					commit('setRecipeFormLoading', false);
@@ -140,6 +142,7 @@ const actions = {
 			});
 		}else{
 			delete recipeData.file;
+			recipeData.date = firebase.firestore.FieldValue.serverTimestamp();
 			recipeData.photo = 'https://firebasestorage.googleapis.com/v0/b/coolrecipes-f4e21.appspot.com/o/placeholders%2Frecipe_placeholder.png?alt=media&token=a23e9154-81c1-4d70-83a1-af110b2649c9';
 			db.collection('recipes').add(recipeData);
 			dispatch('loadRecipes');
