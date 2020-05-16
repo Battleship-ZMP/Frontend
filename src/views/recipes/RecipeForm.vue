@@ -91,6 +91,9 @@
 				}
 			},
 			getDate(){
+				// var curdate = new Date(null);
+				// curdate.setTime(Date.now());
+				// console.log(curdate.toLocaleString());
 				var formatter = new Intl.DateTimeFormat('pl');
 				const now = new Date();
 				var date = formatter.format(now);

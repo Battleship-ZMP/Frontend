@@ -1,12 +1,6 @@
 <template>
 	<v-container class="">
-		<v-chip v-for="sortChip in sortChips" class="mr-2 sort-chip mb-2" @click="sortRecipes('date', 'asc')" filter filter-icon="mdi-chevron-up" :input-value="true">Czas dodania</v-chip>
-		<!-- <v-chip class="mr-2 sort-chip mb-2" @click="sortRecipes('date', 'asc')" filter filter-icon="mdi-chevron-up" :input-value="true">Czas dodania</v-chip>
-		<v-chip class="mr-2 sort-chip mb-2" filter filter-icon="mdi-chevron-down" @click="sortRecipes('date', 'desc')" :input-value="true">Czas dodania</v-chip>
-		<v-chip class="mr-2 sort-chip mb-2" @click="sortRecipes('name', 'asc')" filter filter-icon="mdi-chevron-up" :input-value="true">Nazwa</v-chip>
-		<v-chip class="mr-2 sort-chip mb-2" @click="sortRecipes('name', 'desc')" filter filter-icon="mdi-chevron-down" :input-value="true">Nazwa</v-chip>
-		<v-chip class="mr-2 sort-chip mb-2" @click="sortRecipes('rating', 'asc')" filter filter-icon="mdi-chevron-up" :input-value="true">Ocena</v-chip>
-		<v-chip class="mr-2 sort-chip mb-2" filter filter-icon="mdi-chevron-down" @click="sortRecipes('rating', 'desc')" :input-value="true">Ocena</v-chip> -->
+		<v-chip v-for="(sortChip, index) in sortChips" :key="index" class="mr-2 sort-chip mb-2" @click="sortRecipes(sortChip.sortBy, sortChip.sortType)" filter :filter-icon="sortChip.icon" :input-value="true">{{ sortChip.name }}</v-chip>
 		<v-row class="">
 			<v-col class=""  cols="12" md="4" sm="6" v-for="(recipe,index) in recipes" :key="recipe.id">
 				<router-link class="" :to="`/recipe/${recipe.id}`" style="text-decoration: none;">
@@ -46,14 +40,15 @@
 		data(){
 			return{
 				sortChips:[
-				{sortBy: 'date',type:'asc'name', 'rating']},
-				{sortType:[
-					{, icon: 'mdi-chevron-up'},
-					{type: 'down', icon: 'mdi-chevron-down'},
-					]
-				}
+				{sortBy: 'date', sortType:'asc', name:'Czas Dodania', icon: 'mdi-chevron-up'},
+				{sortBy: 'date', sortType:'desc', name:'Czas Dodania', icon: 'mdi-chevron-down'},
+				{sortBy: 'name', sortType:'asc', name:'Nazwa', icon: 'mdi-chevron-up'},
+				{sortBy: 'name', sortType:'desc', name:'Nazwa', icon: 'mdi-chevron-down'},
+				{sortBy: 'rating', sortType:'asc', name:'Ocena', icon: 'mdi-chevron-up'},
+				{sortBy: 'rating', sortType:'desc', name:'Ocena', icon: 'mdi-chevron-down'},
 				]
-			}
+			}	
+			
 		},
 		props: ['givenRecipes'],
 		computed:{

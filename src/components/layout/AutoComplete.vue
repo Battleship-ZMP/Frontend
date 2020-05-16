@@ -3,7 +3,7 @@
 		<template v-slot:no-data>
 			<v-list-item>
 				<v-list-item-title>
-					Znajdź swój
+					Znajdź
 					<strong>przepis</strong>
 					dla siebie!
 				</v-list-item-title>
