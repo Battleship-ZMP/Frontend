@@ -43,3 +43,14 @@ export function selectStar(data){
 		isSelected: data.isSelected
 	};
 }
+
+export function getAverage(ratings){
+	if(ratings.length == 0){
+		return 0;
+	}
+	let result = 0;
+	for(let i =0 ;i<ratings.length ; i++){
+		result += ratings[i];
+	}
+	return Math.floor(result/ratings.length);
+}

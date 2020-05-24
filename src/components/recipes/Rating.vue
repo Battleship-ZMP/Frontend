@@ -1,7 +1,7 @@
 <template>
 	<v-dialog v-model="dialog" persistent max-width="400">
 		<template v-slot:activator="{ on }">
-			<v-btn v-if="user.docId" @click="selectedStar = null" v-on="on" color="teal" depressed class="ml-2 d-flex white--text align-center">
+			<v-btn v-if="user.docId" v-on="on" color="teal" depressed class="ml-2 d-flex white--text align-center">
 				<v-icon class="" left>mdi-star</v-icon>
 				<p class="ma-0">Oceń</p>
 			</v-btn>
@@ -27,9 +27,9 @@
 		props:['user', 'recipe'],
 		data(){
 			return{
-				selectedStar: null,
 				dialog: false,
 				isSelected: false,
+				selectedStar: null,
 				starType: [
 				{name: 'mdi-star-outline', size: 50}, 
 				{name: 'mdi-star-outline', size: 50},
@@ -52,11 +52,6 @@
 					this.starType[i].name = 'mdi-star';
 				}
 			},
-			setStarsAttributes(index){
-				const starsAttributes = RatingHelper.setStarsAttributes(this.starType, index, this.isSelected, this.selectedStar);
-				this.selectedStar = starsAttributes.selectedStar;
-				this.starType = starsAttributes.starType;
-			},
 			selectStar(index){
 				const data = {
 					isSelected: this.isSelected,
@@ -69,28 +64,45 @@
 				this.setStarsAttributes(index);
 
 			},
-			setStarsAttributesToNormal(){
-				for(let i =0 ;i< 5 ;i++){
-					this.starType[i].name = 'mdi-star-outline';
-					this.starType[i].size = 50;
-				}
+			setStarsAttributes(index){
+				const starsAttributes = RatingHelper.setStarsAttributes(this.starType, index, this.isSelected, this.selectedStar);
+				this.selectedStar = starsAttributes.selectedStar;
+				this.starType = starsAttributes.starType;
 			},
 			rateRecipe(){
-				if(this.selectedStar == null){
-					return;
+				if(this.rating == null){
+					this.recipe.rating.push({
+						value: this.selectedStar,
+						userID: this.$store.getters.getUserData.userId
+					});
+				}else{
+					for(let i=0 ; i<this.recipe.rating.length ; i++){
+						if(this.recipe.rating[i].userID == this.user.userId){
+							this.recipe.rating[i].value = this.selectedStar;
+						}
+					}
 				}
-				if(!Array.isArray(this.recipe.rating)){
-					this.recipe.rating = [];
-				}
-				this.recipe.rating.push(this.selectedStar);
+				
 				this.$store.dispatch('updateRecipe', this.recipe);
-				this.setStarsAttributesToNormal();
 				this.dialog = false;
 			},
 			closeDialog(){
-				this.setStarsAttributesToNormal();
 				this.dialog = false;
-			},
+			}
+		},
+		computed:{
+			rating(){
+				return this.$store.getters.getRating;
+			}
+		},
+		watch:{
+			rating(){
+				if(this.rating != null) this.selectedStar = this.rating;
+			}
+		},
+		created(){
+			this.selectedStar = this.rating;
+			this.setStarsAttributes(this.selectedStar - 1);
 		}
 	}
 </script>

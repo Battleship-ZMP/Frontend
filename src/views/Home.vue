@@ -36,6 +36,7 @@
 </template>
 
 <script>
+	import {getAverage} from '@/helpers/RatingHelper';
 	export default{
 		data(){
 			return{
@@ -69,18 +70,15 @@
 						return recipes;
 					}
 				}
-			},
-			users(){
-				return this.$store.getters.getUsers;
 			}
 		},
 		methods:{
 			getRating(rating){
-				if(rating.length != 0){
-					return rating.reduce((a,b)=> {return a+b;}) / rating.length;
-				}else{
-					return 0;
+				let ratingValues = [];
+				for(let i =0 ;i<rating.length ; i++){
+					ratingValues.push(rating[i].value);
 				}
+				return getAverage(ratingValues);
 			},
 			sortRecipes(sortBy, sortType){
 				this.$store.dispatch('sortRecipes', {
@@ -90,7 +88,8 @@
 			},
 			getUserName(userID){
 				return this.$store.getters.getUserName(userID);
-			}
+			},
+			
 		}
 	}
 </script>

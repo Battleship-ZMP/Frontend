@@ -10,7 +10,7 @@ const state = {
 		ingredients: '',
 		instructions: '',
 		name: '',
-		rating: 0,
+		rating: [],
 		date: '',
 		photo: '',
 		savedByUsers: [],
@@ -65,6 +65,20 @@ const getters = {
 	},
 	getDeleteLoading(state){
 		return state.deleteLoading;
+	},
+	getRating(state, getters){
+
+		let isRated = false;
+		let rate = 0;
+		const user = getters.getUserData;
+		for(let i=0 ; i<state.currentRecipe.rating.length ; i++){
+			if(state.currentRecipe.rating[i].userID == user.userId){
+				rate = state.currentRecipe.rating[i].value;
+				isRated = true;
+				break;
+			}
+		}
+		return isRated ? rate : null;
 	}
 };
 
@@ -182,7 +196,12 @@ const actions = {
 			var sortRatings = [];
 			for(let i =0 ;i<recipes.length; i++){
 				if(recipes[i].rating.length != 0){
-					var rating = recipes[i].rating.reduce((a,b)=> {return a+b;}) / recipes[i].rating.length;
+					let ratings = [];
+					for(let j=0 ; j<recipes[i].rating.length ; j++){
+						ratings.push(recipes[i].rating[j].value);
+					}
+					
+					var rating = ratings.reduce((a,b)=> {return a+b;}) / ratings.length;
 				}else{
 					var rating = 0;
 				}
