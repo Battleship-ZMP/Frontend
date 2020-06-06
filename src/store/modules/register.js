@@ -21,7 +21,6 @@ const mutations = {
 const actions = {
 	signUp({commit, dispatch}, authData){
 		auth.createUserWithEmailAndPassword(authData.email, authData.password).then(cred=>{
-			console.log(cred.user);
 			const userData = {
 				userId: cred.user.uid,
 				token: cred.user.refreshToken,
@@ -36,6 +35,7 @@ const actions = {
 			commit('setUserData', userData);
 			delete authData.password;
 			authData.photo = 'https://firebasestorage.googleapis.com/v0/b/coolrecipes-f4e21.appspot.com/o/placeholders%2Favatar_placeholder.png?alt=media&token=a53a239f-ed1e-4de8-ba7c-80c29f82f52f';
+			authData.bio = "";
 			dispatch('saveNewUser', authData);
 			dispatch('autoLogout', timeToLogout);
 		}).catch(err=>{

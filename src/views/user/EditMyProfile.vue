@@ -72,11 +72,8 @@
 					isPhoto: v => !v || v.type.includes('image') || 'Zdjęcie albo nic!',
 					matchPassword: v => v == this.userData.newPassword || 'Hasła muszą być takie same!',
 					minLength: value => !value || value.length >= 8 || 'Hasło musi mieć minimum 8 znaków!',
-					oldPassword: v=>{
-						// if(this.userData.newPassword != ''){
-							return !!v || 'Podaj stare hasło!';
-						// }
-					}
+					oldPassword: v=> this.oldPassword(v)
+					
 				},
 				url: localStorage.getItem('photo'),
 				file: null
@@ -127,7 +124,7 @@
 						docId: localStorage.getItem('docId')
 					};
 					localStorage.setItem('bio', userData.bio);
-					if(this.userData.newPassword != ''){
+					if(this.userData.newPassword){
 						this.$store.commit('setEditLoading', true);
 						this.$store.dispatch('changeUserPassword', {
 							newPassword: this.userData.newPassword,
@@ -157,6 +154,12 @@
 					this.$store.commit('setEditLoading', true);
 					this.$store.dispatch('deleteAccount',this.password);
 				}
+			},
+			oldPassword(value){
+				let message = true;
+				if(this.userData.newPassword) message = !!value || 'Podaj stare hasło!';
+				return message;
+				
 			}
 		},
 		created(){

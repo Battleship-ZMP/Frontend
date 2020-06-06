@@ -6,7 +6,7 @@
 				<router-link class="" :to="`/recipe/${recipe.id}`" style="text-decoration: none;">
 					<v-card class="h-100" >
 						<v-card-title class="justify-center">
-							<img class="" :src="recipe.photo" alt="" style=" height: 200px">
+							<img class="" :src="recipe.photo" alt="" style=" height: 200px; width:100%;">
 						</v-card-title>
 						<v-card-text class="text-center">
 							<div class="">
@@ -90,6 +90,9 @@
 				return this.$store.getters.getUserName(userID);
 			},
 			
+		},
+		created(){
+			this.$store.dispatch('loadRecipes');
 		}
 	}
 </script>

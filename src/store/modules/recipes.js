@@ -161,7 +161,6 @@ const actions = {
 			db.collection('recipes').add(recipeData);
 			dispatch('loadRecipes');
 			console.log('bez zdjecia');
-			// setTimeout(()=>{commit('setRecipeFormLoading', false);},1000);
 			commit('setRecipeFormLoading', false);
 		}
 		

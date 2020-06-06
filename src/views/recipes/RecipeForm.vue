@@ -67,13 +67,19 @@
 							id: this.recipe.id
 						};
 						this.$store.commit('setRecipeFormLoading', true);
-						this.$store.dispatch('editRecipe', recipeData);
+						if(this.file == null){
+							setTimeout(()=>{this.$store.dispatch('editRecipe', recipeData);},1000);
+						}else{
+							this.$store.dispatch('editRecipe', recipeData);
+						}
+						
 					}else{
 						const recipeData = {
 							description: this.recipe.description,
 							ingredients: this.recipe.ingredients,
 							instructions: this.recipe.instructions,
-							name: this.recipe.name,
+							name: this.recipe.name.charAt(0).toUpperCase() + 
+           this.recipe.name.slice(1),
 							rating: [],
 							userID: this.$store.getters.getUserData.docId,
 							file: this.file,

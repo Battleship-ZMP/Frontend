@@ -48,7 +48,6 @@ const actions = {
 				});
 			});
 		}).catch(err=>{
-			console.log('no i dupa', err);
 			commit('setErrors', err);
 		});
 		
